@@ -1,0 +1,177 @@
+<ui:composition template="default_settings.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>系统设置</li>
+				<li class="active">任务管理</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">任务管理</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form>
+							    <p id="p_message" style="display: none;">#{taskSettingController.m_message}</p>
+							    <p></p>
+							    
+							    <div class="table-responsive">
+							    
+								<table>
+									<tbody>
+										<tr>
+											<td style="width: 15%; vertical-align: middle;"><h:outputLabel value="任务名称："/></td>
+											<td style="width: 50%;">
+												 <h:inputText id="task_name" class="form-control" style="height:22px;width:100%;" 
+													value="#{taskSettingController.m_taskName}" /> 
+													<h:message for="task_name" />
+											 </td>
+											 <td><h:commandButton action="#{taskSettingController.addTask}" value="添加" style="margin-left: 2px; height: 20px;"/>
+										     </td>
+										</tr>
+									 </tbody>
+								 </table>    
+									
+								<h:dataTable id="table_set_information" var="bean" value="#{taskSettingController.m_allTask}"
+										styleClass="table table-striped table-bordered nowrap" style=" margin-top: 4px;">
+										<tr class="odd gradeX">
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.m_rowId}
+									        </h:column>
+											<h:column>
+												<f:facet name="header">任务名称</f:facet>
+				  			                    #{bean.m_name}
+				 				            </h:column>
+											<h:column>
+												<f:facet name="header">操作</f:facet>
+												<h:commandLink disabled="#{bean.m_name == 'RECORD_TASK'}" onclick="javascript: goTodeleteTask('#{bean.m_id}')" value="删除"/>
+											</h:column>
+										</tr>
+								</h:dataTable>
+								</div>
+								
+								<!-- <input type="hidden" name="load" value="lazy" /> -->
+								<input type="hidden" name="task_id" id="hidden_task_id"/>	
+								<h:commandButton value="删除任务" action="#{taskSettingController.deleteTask}" style="display: none;"/>
+															
+								<input type="hidden" name="size" value="#{taskSettingController.m_queryBean.size}" />
+								<h:inputHidden id="queryCount" value="#{taskSettingController.m_queryBean.count}" />
+								<h:outputLabel value="共#{taskSettingController.m_queryBean.max}页, 当前页码"></h:outputLabel>
+								<h:inputText id="queryCurrent" value="#{taskSettingController.m_queryBean.current}" style="width : 80px; height : 20px; margin-left:10px; margin-right:30px"/>
+								<h:commandButton action="#{taskSettingController.queryCurrentPage}" value="跳转"></h:commandButton>
+								<h:commandButton action="#{taskSettingController.queryPreviousPage}" value="上一页"></h:commandButton>
+								<h:commandButton action="#{taskSettingController.queryNextPage}" value="下一页"></h:commandButton>
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-12 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+
+	<ui:define name="js_content">
+		<script>
+			$(document).ready(function() {
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+
+	    		$("#system_settings").css('color', '#0090FF');
+	    		$("#li_1").css('color', '#88AEF1');
+	    		$("#li_2").css('color', '#88AEF1');
+	    		$("#li_3").css('color', '#88AEF1');
+	    		$("#li_4").css('color', '#88AEF1');
+	    		$("#li_5").css('color', '#88AEF1');
+	    		$("#li_6").css('color', '#0090FF');
+	    	});
+
+			function showMessage(){
+		    	var o = $("#p_message");
+		    	if (o == undefined) {
+		    		return ;
+		    	}
+		    	var message = o.html();
+		    	if (message == undefined) {
+		    		return ;
+		    	}
+
+		    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+		    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+		    		$.msgbox({
+		    			type : 'success',
+		    			content : $("#p_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '操作成功'
+		    		});
+		    	} else if (message != "") {
+		    		$.msgbox({
+		    			type : 'alert',
+		    			content : $("#p_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '提示',
+		    			buttons: ['确定'],
+	                    buttonEvents: {
+	                        '确定': function() {
+	                            $.msgbox.closeAll();
+	                        }
+	                    }
+		    		});
+		    		 var msgbox = $.msgbox(0)
+			         if (msgbox) msgbox.content($("#p_message").html());
+		    	}
+		    } 
+
+			function goTodeleteTask(m_id){
+				$("#hidden_task_id").attr("value", m_id);
+				var flag = confirm("确定删除？");
+				 if(flag){
+					 $(":submit[value='删除任务']").each(function(){
+							$(this).click();
+					 });
+				 }
+		    }
+
+		</script>
+	</ui:define>
+
+</ui:composition>

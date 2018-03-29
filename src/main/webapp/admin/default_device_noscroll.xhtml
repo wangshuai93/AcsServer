@@ -1,0 +1,66 @@
+<ui:composition template="default_nosilder_noscroll.xhtml" 
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:my="http://java.sun.com/jsf/composite/components"
+        xmlns:p="http://primefaces.org/ui" >
+	<ui:define name="content">	
+		 <div id="page-container" class="fade in page-sidebar-fixed page-header-fixed ">
+		 
+		 	<!-- begin sidebar -->
+		 	<div id="sidebar" class="sidebar">
+		 		<!-- begin sidebar scrollbar -->
+	            <div data-scrollbar="true" data-height="100%">
+	            	<ul id="sidebar_ul_total" class="nav">
+                
+                	 <li id="sidebar_li_monitor_manage" class="has-sub f-s-18" style="display: block;" >
+                        <a href="javascript:;">
+                        	<b class="caret pull-right"></b>
+                            	<span class = "f-s-20">设备管理</span>
+                        </a>
+                        <ul class="sub-menu f-s-16" style="display: block;">
+                        	<li><h:outputLabel><a id="li_1" href="main_view.jsf" class="f-s-18" style="color: #88AEF1;">主页视图</a></h:outputLabel></li>
+                            <li><h:outputLabel><a id="li_2" href="device_manage.jsf" class="f-s-18" style="color: #88AEF1;">所有设备</a></h:outputLabel></li>
+                            <!-- <li><h:outputLabel><a id="li_3" href="upload_image.jsf" class="f-s-18" style="color: #88AEF1;">升级管理</a></h:outputLabel></li> -->
+                            <li><h:outputLabel><a id="li_4" href="alarming.jsf" class="f-s-18" style="color: #88AEF1;">当前告警</a></h:outputLabel></li>
+                        </ul>
+                    </li>
+                    </ul>
+	            </div>
+	             <!-- end sidebar scrollbar -->
+            </div>
+            <!-- end sidebar-->
+            <div class="sidebar-bg"></div>
+		 	<ui:insert name="centercontent">
+            <!-- [Template content will be inserted here, data in the panel] -->
+            	
+        	</ui:insert> 
+        	<ui:insert name="js_content_device">
+            <!-- [JS  content will be inserted here, data in the panel] -->
+            	
+        	</ui:insert>     
+			<div style="display: none" class="bg" id="bg"></div>
+		 </div>
+	</ui:define>
+	 <ui:define name="js_content">
+		<script >
+		$(document).ready(function() {
+			var patn = window.location.pathname;
+			var x = patn.indexOf('default_device.jsf');
+			if(x > 0 || x == 0){
+				window.location.href="main_view.jsf";
+			} 
+			$("#device_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#0090FF');
+			$("#li_2").css('color', '#88AEF1');
+			$("#li_3").css('color', '#88AEF1');
+			$("#li_4").css('color', '#88AEF1');	
+   		});
+		</script>
+
+		<ui:insert name="js_content2">
+   		</ui:insert>
+   		
+	</ui:define>
+</ui:composition>

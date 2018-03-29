@@ -1,0 +1,191 @@
+<ui:composition template="default_user.xhtml"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:my="http://java.sun.com/jsf/composite/components"
+         xmlns:rich="http://richfaces.org/rich">
+     <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>用户管理</li>
+				<li class="active">修改密码</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading"  >
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">修改登录密码</h4>
+						</div>
+
+                        <div class="panel-body">
+						    <h:form>
+
+								<p id="p_operator_message" style="display:none;">#{userManagerController.m_message}</p>
+								<p></p>
+								
+								<div class="table-responsive">
+                                 <div class="panel-heading" style="float:left;">
+                                	<div style="font-size:1.5em; float:left;">
+                           		 	<strong>基本信息：</strong> 
+                           		 	</div>
+                           		 	<i id="basicInfo" class="fa fa-2x fa-chevron-circle-up" data-toggle="collapse" style="cursor:pointer;"
+                                   	aria-expanded="true" data-target="#collapseOne" onclick="javascript:changepic(this)"></i>
+                                </div>
+                                 <div style="margin:0;padding:0;width:100%;height:1px;background-color:#303030;overflow:hidden;"></div>
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+									<table class="table">
+										<tbody>
+                                            <tr>
+                                            	<td width="10%" rowspan="11" align="right">
+											  		<!-- 用于密码防止密码的自动填充 -->
+											  		<input type="text" id="_username_" name="_username_" style="display: none"/>
+													<input type="password" id="_password_" name="_password_" style="display: none"/>
+												</td>
+                                                <td style="width:15%; vertical-align: middle;">*用户名</td>
+                                                <td style="width:50%;"><h:inputText id="m_userName" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{userManagerController.m_userDetailBean.m_userName}" readonly="true"/>
+                                                        <h:message for="m_userName" />
+                                                        </td>  
+                                            	<td/>
+                                            </tr>
+                                            
+                                             <tr>
+                                                <td style="vertical-align: middle;">新密码</td>
+                                                <td><h:inputSecret id="passwordnew" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{userManagerController.m_userDetailBean.m_password}" />
+                                                        <h:message for="passwordnew" /></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            <td style="vertical-align: middle;">确认密码</td>
+                                                <td><h:inputSecret id="passwordEx" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{userManagerController.m_userDetailBean.m_passwordEx}" />
+                                                        <h:message for="passwordEx" /></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            <td style="vertical-align: middle;">手机号</td>
+                                                <td><h:inputText id="phoneNumber"  class="form-control" style="height:26px;width:100%;"
+                                                        value="#{userManagerController.m_userDetailBean.m_phoneNumber}"  readonly="true"/>
+                                                        <h:message for="phoneNumber" /></td>
+                                            	<td><div style="color:#ff0000;">  </div></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                               <td style="vertical-align: middle;">角色</td>
+                                                <td>
+                                                    <h:inputText id="roleDescriptions" value="#{userManagerController.m_userDetailBean.m_roleName}" readonly="true"
+                                                         class="form-control input-sm" style="width:100%;">
+                                                    </h:inputText>
+                                                    <h:message for="roleDescriptions" />
+                                                </td> 
+                                              </tr>
+                                               <tr>
+                                               <td style="vertical-align: middle;">部门</td>
+                                                <td>
+                                                    <h:inputText id="m_department" value="#{userManagerController.m_userDetailBean.m_department}" readonly="true"
+                                                         class="form-control input-sm" style="width:100%;">
+                                                    </h:inputText>
+                                                    <h:message for="m_department" />
+                                                </td> 
+                                              </tr>
+                                     </tbody>
+									</table>
+									</div>   
+								</div>
+							
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="detail" value="update" />
+								<h:inputHidden value="#{userManagerController.m_userDetailBean.m_userId}" />
+								<input type="hidden" name="detail_record_id" value="#{userManagerController.m_userDetailBean.m_userId}" />
+								<div class="div_center_operator">
+	                       			<h:commandButton action="#{userManagerController.updatePassword()}" value="提交" class="grey_black_button_css" />
+			                        <input type="button" onclick="javascript: window.location.href='../admin/all_users.jsf';" value="返回" class="grey_black_button_css" />
+		                        </div>
+								
+						   </h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">
+                        欢迎访问本系统                     V_2017.8.30
+                    </p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+		$(document).ready(function() {
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}
+    		$("#account_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#88AEF1');
+			$("#li_2").css('color', '#88AEF1');
+			$("#li_3").css('color', '#0090FF');
+    	});
+		function changepic(msg)
+	    {
+	        var bs = document.getElementById(msg.id);
+            if((bs.getAttribute('aria-expanded')) == "false")
+	          {
+	            bs.setAttribute("class", "fa fa-2x fa-chevron-circle-up");
+		      }
+		    else if((bs.getAttribute('aria-expanded')) == "true")
+			  {
+		        bs.setAttribute("class", "fa fa-2x fa-chevron-circle-down");
+			  } 
+		 }
+		function changetime()
+    	{
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}else{
+				$("[id$='time']").attr("readonly",false);
+			}
+        }
+
+		function checkCandNumber(phoneNumber){
+			var val=phoneNumber.value;
+			if(val.length != 11)
+			{ 
+				$("#phone").html("#{msgs.phoneError}");
+				}else{
+					$("#phone").html("");
+					}
+	    }
+			/* _ *\    */
+		</script>
+    </ui:define>
+
+</ui:composition>

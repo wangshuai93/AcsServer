@@ -1,0 +1,139 @@
+.progress_my1{height:20px;
+		overflow:hidden;
+		background-color:#f5f5f5;
+		border-radius:4px;
+		-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);
+		box-shadow:inset 0 1px 2px rgba(0,0,0,.1)};
+}
+.user_card{
+	margin:0.6%;
+	border-style:solid;
+	border-width:thin;
+	float: left;
+	height: 30%;
+	width: 23%;
+}
+.div_car{
+	margin:0.6%;
+	border-style:solid;
+	border-width:thin;
+	float: left;
+	height: 30%;
+	width: 23%;
+}
+.tr_color{
+	background-color:#F0F0FF;
+}
+
+.table_cell{
+	cellspacing:20px;
+	cellpadding:2%;
+	marigin:0;
+}
+.my_table3{
+	margin-left:180px;
+}
+.my_table2{
+	width:100px;
+	height:120px;
+	/* border:1px solid #0058a3; */
+	/* cellpadding:100px; */
+	/* margin-left:30px;
+	margin-top:50px; */
+}
+.my_table{
+	/* border:1px solid #0058a3; */
+	font-family:Arial;  
+    border-collapse:collapse;   /* ±ß¿òÖØµþ */    
+	font-size:14px;
+	margin-left:30px;
+	margin-top:10px;
+}
+.my_tables{
+	/* border:1px solid #0058a3; */
+	font-family:Arial;  
+    border-collapse:collapse;   /* ±ß¿òÖØµþ */    
+	font-size:14px;
+	width:100%;
+}
+.my_table1{
+	width:290px;
+	height:180px;
+	/* border:1px #0058a3; */
+	font-family:Arial;  
+    border-collapse:collapse;    
+	font-size:14px;
+	/* cellspacing:5; */
+	/* cellspadding:2; */
+	/* margin-left:5px;*/  
+	/* margin-top:-15px;  */
+}
+.my_grid{
+	width:50px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(196, 192, 185);
+    font-size: 11px;
+    font-family: Arial,Verdana,sans-serif;
+    color: rgb(0, 0, 0);
+    background-repeat: no-repeat;
+    background-position: 1px 1px;
+    background-color: rgb(255,255,255);
+    background-image: url("/ChargeCenter/org.richfaces.resources/rfRes/inputBackgroundImage.png?v=4.5.2.Final&db=eAFjZL!AyMDN-P8!4!-P714C6f!!GZgAYeQKqw__&ln=org.richfaces.images");
+}
+.my_grid1{
+	
+	width:200px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(196, 192, 185);
+    font-size: 11px;
+    font-family: Arial,Verdana,sans-serif;
+    color: rgb(0, 0, 0);
+    background-repeat: no-repeat;
+    background-position: 1px 1px;
+    background-color: rgb(238,238,238);
+    background-image: url("/ChargeCenter/org.richfaces.resources/rfRes/inputBackgroundImage.png?v=4.5.2.Final&db=eAFjZL!AyMDN-P8!4!-P714C6f!!GZgAYeQKqw__&ln=org.richfaces.images");
+}
+.my_bgImage{
+	border-style: solid;
+	border-width: thin;
+	margin: 0.6%;
+	width: 450px;
+	height: 280px;
+	float: left;
+	background-image: url("../img/listen.gif");
+	background-size: 450px 280px;
+	repeat: fixed;
+	font-family: Î¢ÈíÑÅºÚ;
+}
+
+.my_bgImages{
+	border-style:solid;
+	border-width:thin;
+	margin:0.6%;
+	width:450px;
+	height:280px;
+	float:left;
+	background-image:url("../img/big_bms_offline.jpg");
+	background-size:450px 280px;
+	repeat:fixed;
+	font-family:Î¢ÈíÑÅºÚ;"
+}
+
+.my_connector{
+	border-style:solid;
+	border-width:thin;
+	margin:0.6%;
+	width:350px;
+	height:300px;
+	float:left;
+	background-image:url('../img/connector.png');
+	background-size:350px 300px;
+	repeat:fixed;
+	font-family:Î¢ÈíÑÅºÚ;
+}
+.tablestyle label{
+	padding-top:5px;
+	padding-bottom: 0px;
+}

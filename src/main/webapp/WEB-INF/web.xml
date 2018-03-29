@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>RESTful Service Authentication</display-name>
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/index.jsf</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error_404.jsf</location>
+	</error-page>
+	
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error_500.jsf</location>
+    </error-page>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<listener>
+		<listener-class>com.yinhe.server.AcsServer.auth.EmployeeSessionListener</listener-class>
+	</listener>
+	
+	<filter>
+		<filter-name>UserAuthenticationFilter</filter-name>
+		<filter-class>com.yinhe.server.AcsServer.auth.UserAuthorityFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>UserAuthenticationFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping> 
+	
+  <servlet>
+    <servlet-name>AcsServlet</servlet-name>
+    <servlet-class>com.yinhe.server.AcsServer.servlet.AcsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AcsServlet</servlet-name>
+    <url-pattern>/AcsServlet</url-pattern>
+  </servlet-mapping> 
+
+</web-app>

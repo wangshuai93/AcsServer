@@ -1,0 +1,53 @@
+@charset "utf-8";
+html, body, div, span, applet, object, iframe, table, caption, tbody, tfoot, thead, tr, th, td, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {
+    border: 0 none;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+}
+
+ 
+:focus {outline: 0 none;}
+body { 
+    background: none repeat scroll 0 0 #fff;
+    font-family:"微软雅黑" "黑体" Arial,Helvetica,sans-serif;
+    font-size: 12px 
+}
+ 
+
+ol, ul {list-style: none outside none;}
+table {border-collapse: separate;border-spacing: 0;}
+caption, th, td {font-weight: normal;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a {text-decoration: none;}
+ 
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+}
+.clearfix {
+}
+.clear {clear: both;}
+ 
+a:focus {}
+
+.fll{ float:left}
+.flr{ float:right}
+.mt10{ margin-top:10px}
+.mt20{ margin-top:20px}
+.ml10{ margin-left:10px;}
+.ml20{ margin-left:20px;}
+.red{ color:#f00;}
+.yellow{ color:#ff0}
+.f12{ font-size:12px;}
+.red{ color:#f00}
+ 

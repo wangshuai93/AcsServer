@@ -1,0 +1,207 @@
+<ui:composition template="default_settings.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>系统设置</li>
+				<li class="active">更新数据</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">更新数据</h4>
+						</div>
+
+				    <div class="panel-body">
+				      	<h:form id="update_data">
+				      		<p id="p_import_message" style="display: none;">#{updateDataController.m_importMessage}</p> 					
+
+							<div style="margin-top: 2%; width: 100%;">
+								<rich:fileUpload  id="uploadFile" name="uploadFile" style="width:100%;"
+						             fileUploadListener="#{updateDataController.uploadListener}"
+						             addLabel="上传参数表" 
+						             uploadLabel="上传"
+						             clearAllLabel="清空"
+						             clearLabel="删除"
+						             deleteLabel="删除"
+						             doneLabel="上传成功"
+						             serverErrorUpLabel="服务器错误：上传失败"
+						             noDuplicate="true"
+						             listHeight="auto"
+						             immediateUpload="true">
+					             	 <f:ajax render="table_information uploadFile" event="uploadcomplete"/>
+					             </rich:fileUpload>
+							</div>
+							
+							<div class="table-responsive">
+								<h:outputLabel value="历史版本" style="margin-top: 2%;"/>
+								<h:dataTable id="table_information" var="bean"
+									value="#{updateDataController.updateDataBeanList}"
+									styleClass="table table-striped table-bordered nowrap">
+									<tr class="odd gradeX">	
+										<h:column>
+											<f:facet name="header">序号</f:facet>
+									        #{bean.m_rowId}
+								        </h:column>		
+										<h:column>
+											<f:facet name="header">版本号</f:facet>
+								 	        #{bean.m_version}			
+			      			  	        </h:column> 
+			      			  	        <h:column>
+											<f:facet name="header">文件名</f:facet>
+								 	        #{bean.m_name}			
+			      			  	        </h:column>
+			      			  	        <h:column>
+											<f:facet name="header">更新时间</f:facet>
+								 	        <h:outputText value="#{bean.m_date}"
+												converter="#{converterFactory.dateTimeConverter}"
+		                              			datePattern="yyyy-MM-dd HH:mm:ss">
+											</h:outputText>		
+			      			  	        </h:column>
+			      			  	        <h:column>
+											<f:facet name="header">是否当前使用版本</f:facet>
+								 	        #{bean.m_isCurrentVersion}			
+			      			  	        </h:column>
+                                        <h:column>
+											<f:facet name="header">操作</f:facet>
+											<a href="javascript: goToUpdateData('#{bean.m_name}')"
+													style="color: black;">导入数据模型至数据库</a>
+								        </h:column>											
+									</tr>
+								</h:dataTable>
+							</div>	
+							
+							<input type="hidden" name="fileName" id="fileName"/>	
+							<h:commandButton style="display: none;"
+							    action="#{updateDataController.importXml()}" value="更新数据模型"/>
+				      	</h:form>
+				    </div>					
+				</div>
+				<!-- end panel -->
+			 </div>	
+			 <!-- end col-10 -->
+			</div>		
+			<!-- end row -->			
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">		
+			$(document).ready(function() {
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+
+	    		$("#system_settings").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#88AEF1');
+				$("#li_3").css('color', '#88AEF1');
+				$("#li_4").css('color', '#88AEF1');	
+				$("#li_5").css('color', '#0090FF');
+	    	});
+
+	    	function goToUpdateData(name){
+		    	var flag = false;
+	    		$.msgbox({
+	    			type : 'alert',
+	    			content : '请确认表格数据的正确性，该操作可能导致之前数据丢失或已有设置失效，确定要更新么?',
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+	    			title : '提示',
+	    			buttons: ['确定', '取消'],
+		               buttonEvents: {
+		                   '确定': function() {
+		                	   $("#fileName").attr("value", name);
+		                       $(":submit[value='更新数据模型']")[0].click();
+		                       $.msgbox.closeAll();
+		                   },
+		                   '取消': function() {
+		                       $.msgbox.closeAll();
+		                   }
+		               }
+	    		});
+		    }
+	
+			//import message
+	    	function showMessage(){
+		    	var o = $("#p_import_message");
+		    	if (o == undefined) {
+		    		return ;
+		    	}
+		    	var message = o.html();
+		    	if (message == undefined) {
+		    		return ;
+		    	}
+
+		    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+		    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+		    		$.msgbox({
+		    			type : 'success',
+		    			content : $("#p_import_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '操作成功',
+		    			buttons: ['确定'],
+	                    buttonEvents: {
+	                        '确定': function() {
+	                            $.msgbox.closeAll();
+	                            location.href = location.href;
+	                        }
+	                    }
+		    		});
+		    	} else if (message != "") {
+		    		$.msgbox({
+		    			type : 'alert',
+		    			content : $("#p_import_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '提示',
+		    			buttons: ['确定'],
+	                    buttonEvents: {
+	                        '确定': function() {
+	                            $.msgbox.closeAll();
+	                        }
+	                    }
+		    		});
+		    		 var msgbox = $.msgbox(0)
+			         if (msgbox) msgbox.content($("#p_import_message").html());
+		    	}
+		    }
+		</script>
+		
+	</ui:define>
+
+</ui:composition>

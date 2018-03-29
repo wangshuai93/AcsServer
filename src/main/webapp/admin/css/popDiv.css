@@ -1,0 +1,151 @@
+
+.registerDiv {
+text-align:center;
+background-color: white;
+font-size: 12px;
+font-weight: bold;
+z-index:99;
+width:auto;
+height:auto;
+left:45%;
+  /*FF IE7*/
+top: 32%;/*FF IE7*/
+
+margin-left:-150px!important;/*FF IE7 该值为本身宽的一半 */
+margin-top:-62px!important;/*FF IE7 该值为本身高的一半*/
+
+ 
+position:fixed!important;/*FF IE7*/
+position:absolute;/*IE6*/
+
+_top:       expression(eval(document.compatMode &&
+            document.compatMode=='CSS1Compat') ?
+            documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 :/*IE6*/
+            document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);/*IE5 IE5.5*/
+
+}
+ 
+.bg {
+background:  #ccc scroll;
+width: 100%;
+height: 100%;
+left:0;
+top:0;/*FF IE7*/
+filter:alpha(opacity=50);/*IE*/
+opacity:0.5;/*FF*/
+z-index:36;
+
+position:fixed!important;/*FF IE7*/
+position:absolute;/*IE6*/
+
+_top:       expression(eval(document.compatMode &&
+            document.compatMode=='CSS1Compat') ?
+            documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 :/*IE6*/
+            document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);/*IE5 IE5.5*/
+
+}
+
+/*pop_title pop_close */
+.pop_menu{
+	float:left;
+	padding:0;
+	margin:0;
+	width:100%;
+	height:31px;
+	position:absolute;
+	z-index:100;
+	background:#242a30 none repeat scroll 0 0;
+	color:white;
+}
+.left{
+	float:left;
+}
+.pop_close{
+	float:right;
+     width:5%;
+	height:55%;	
+ 	margin-top:2%;
+	z-index:101;
+  background:red none repeat scroll 0 0;
+  color:white;
+  border-radius:15px;
+  text-align:center;
+	
+}
+.popTable{
+	 
+}
+/* .pop_btn{
+	float:right;
+     width:4%;
+	height:50%;	
+ 	margin:0;
+ 	z-index:101;
+ 	margin-top:4%;
+  background-color:red none repeat scroll 0 0;
+  corlor:white;
+  border-radius:15px;
+  text-align:center;
+} */
+.pop_close a{
+ 	color:white;
+	  font-weight:100px;
+	
+}
+.pop_title{
+	/* margin-top:10%; */
+	width:100%;
+	text-align:center;
+	color:#242a30 ;
+}
+.pop_title h2{
+	float:left;
+}
+.left{
+	margin-top:2%;
+}
+.more a{
+	font-size:12px;
+}
+.flag a{
+	float:left;
+	with:100%;
+	font-size:12px;
+}
+/*pop_title pop_close */
+.more{
+	padding-left:0;
+	margin-left:1%;
+	width:53%;
+}
+
+.popTable .basic{
+	text-align : center;
+}
+.popTable .checkbox{
+	width:50px
+}
+.popTable .title{
+	width:175px
+}
+.popTable .time{
+	width:120px
+}
+.popTable .detial{
+	width:60px
+}
+.push_font{
+	color:#0;
+	font-size:bold;
+	font-family:Arial,Verdana,Sans-serif;
+}
+.push_title{
+	background:#00acac;
+	width:100%;
+  	align:center;
+ 	padding:1% 0;
+ 	border-radius:15px;
+ 	margin:0 0 1% 0;
+} 
+/*The END*/
+

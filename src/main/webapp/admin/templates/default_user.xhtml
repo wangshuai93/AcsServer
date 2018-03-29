@@ -1,0 +1,47 @@
+<ui:composition template="default_nosilder.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+		<div id="page-container"
+			class="fade in page-sidebar-fixed page-header-fixed ">
+			<!-- begin sidebar -->
+			<div id="sidebar" class="sidebar">
+				<!-- begin sidebar scrollbar -->
+				<div data-scrollbar="true" data-height="100%">
+					<h:form id="usermanager_menu_bar">
+						<ul id="sidebar_ul_total" class="nav">
+
+							<li id="sidebar_li_monitor_manage" class="has-sub f-s-18"
+								style="display: block;"><a href="javascript:;"> <b
+									class="caret pull-right"></b> <span class="f-s-20">帐户管理</span>
+							</a>
+								<ul class="sub-menu f-s-16" style="display: block;">
+									<li id="sidebar_usermanager_users"><h:outputLabel>
+											<a href="../admin/users.jsf" class="f-s-18">所有用户</a>
+										</h:outputLabel></li>
+									<li id="sidebar_usermanager_adduser"><h:outputLabel>
+											<a href="../admin/adduser.jsf" class="f-s-18">添加用户</a>
+										</h:outputLabel></li>
+									<li id="sidebar_usermanager_modifypass"><h:outputLabel><h:commandLink
+											action="#{pesonalInfoController.gotoModifyPage()}">修改密码
+										</h:commandLink></h:outputLabel></li>
+								</ul></li>
+						</ul>
+					</h:form>
+				</div>
+				<!-- end sidebar scrollbar -->
+			</div>
+			<!-- end sidebar-->
+			<div class="sidebar-bg"></div>
+			<ui:insert name="centercontent">
+				<!-- [Template content will be inserted here, data in the panel] -->
+
+			</ui:insert>
+			<div style="display: none" class="bg" id="bg"></div>
+		</div>
+	</ui:define>
+</ui:composition>

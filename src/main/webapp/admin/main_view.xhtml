@@ -1,0 +1,383 @@
+<ui:composition template="default_device_noscroll.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:my="http://java.sun.com/jsf/composite/components"
+        xmlns:p="http://primefaces.org/ui">
+       <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">主页视图</li>
+			</ol>
+			<!-- begin row -->
+			<div class="row">
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse" style="margin-bottom: 0px;">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">主页视图</h4>
+						</div>
+						<!-- begin  panel-body  745px  padding: 0.1%;-->
+                        <div id="svg_div" class="map_content" style="height: 100%; width: 100%; line-height: 0px;">
+                       		<!-- begin  map_content   width:1650px-->
+							<svg id="test" style="height: 742px; width: 100%;" viewBox="0 0 1186 533" preserveAspectRatio="none"
+							onload="Init(evt)" onmousedown="Grab(evt)" onmousemove="Drag(evt)" onmouseup="Drop(evt)" onclick="ShowTip(evt)">
+							
+							
+   							<script type="application/javascript" >
+   							
+   							var SVGDocument = null;
+   							var SVGRoot = null;
+   							var TrueCoords = null;
+   							var GrabPoint = null;
+   							var DragTarget = null;
+
+   							var viewScaleX = null;
+   							var viewScaleY = null;
+   							
+   							function draw(id) {
+   								       var canvas = document.getElementById("canvas");
+   								    if (canvas) {
+   									      var context = canvas.getContext("2d");
+   									      context.fillStyle = "red";
+   									      context.strokeStyle = "black";
+   									      context.lineWidth = 5;
+   									      context.fillRect(0,0, 150, 70);      
+   									      context.strokeRect(0,0,70,200);
+   									    } else {
+   									    return;
+   									    }
+   								  }
+   							function Init(evt){
+   								
+   							 	SVGDocument = evt.target.ownerDocument;
+   							 	SVGRoot = evt.target;  
+   							 	TrueCoords = SVGRoot.createSVGPoint();  
+   							    GrabPoint = SVGRoot.createSVGPoint();
+   							}
+   							function Grab(evt){
+   	   							//viewBox的缩放比例
+   								viewScaleX = SVGRoot.viewBox.baseVal.width/parseInt(SVGRoot.style.width);
+   							 	viewScaleY = SVGRoot.viewBox.baseVal.height/parseInt(SVGRoot.style.height);
+   							 	
+   							     var targetElement = evt.target;
+   							     if (targetElement.id != "test"){
+   							    	
+   							        DragTarget = targetElement;
+   							        DragTarget.parentNode.appendChild(DragTarget);
+   							        DragTarget.setAttributeNS(null, "pointer-events", "none");
+   							     	GetTrueCoords(evt);
+   							        var transMatrix = DragTarget.getCTM();
+   							        GrabPoint.x = TrueCoords.x - Number(transMatrix.e);
+   							        GrabPoint.y = TrueCoords.y - Number(transMatrix.f);
+   							     }
+   							  }; 
+
+   							  function Drag(evt){
+   								
+   								GetTrueCoords(evt);
+   							     var targetElement = evt.target;
+							     if (targetElement.id != "test"){
+							    	 var text=document.getElementById("text1");
+							    		var x = evt.clientX - 245;
+		   								var y = evt.clientY - 132;
+		   								var tips=document.getElementById("showtips");
+		   								//换算坐标
+		   								var px = Math.round(x * svg.viewBox.baseVal.width / svgX + svg.viewBox.baseVal.x);
+		   						    	var py = Math.round(y * svg.viewBox.baseVal.height / svgY + svg.viewBox.baseVal.y)-60;
+	   							      tips.setAttributeNS(null, "x", px);
+	   							     tips.setAttributeNS(null, "y", py);
+							    	 text.innerHTML=targetElement.attributes["name"].value;
+							    	 
+   								
+   								tips.setAttributeNS(null, "style", "display:block");
+							     }
+							     if (targetElement.id == "test"){
+		   								var tips=document.getElementById("showtips");
+		   								
+		   							 tips.setAttributeNS(null, "style", "display:none");
+		   							
+		   								
+									}
+   							    if (DragTarget != null){
+   							    	
+   							    	
+   							        var newX = TrueCoords.x - GrabPoint.x;
+   							        var newY = TrueCoords.y - GrabPoint.y;
+   							        DragTarget.setAttributeNS(null, "transform", "translate(" + (newX*viewScaleX+SVGRoot.viewBox.baseVal.x) + "," + (newY*viewScaleY+SVGRoot.viewBox.baseVal.y) + ")");
+   							    
+   							     
+   							  //tips.setAttributeNS(null, "style", "display:none");
+   							     
+  								  
+  								 
+   							     }
+   							  };
+
+   							  function Drop(evt){
+   							     if (DragTarget != null){
+   							        var targetElement = evt.target;
+   							        DragTarget.setAttributeNS(null, "pointer-events", "all");
+   							        
+   							     	var id = DragTarget.id.substring(7);
+   							     	
+   							        window.parent.updatePosition(id, 
+   		   							        DragTarget.cx.baseVal.value + Number(DragTarget.transform.baseVal[0].matrix.e),
+   		   							  		DragTarget.cy.baseVal.value + Number(DragTarget.transform.baseVal[0].matrix.f));
+	   							  		
+   							     	DragTarget = null;
+   							     }
+   							  };
+   							  
+   							function ShowTip(evt){
+   							
+   	   							}
+	   							
+   							  function GetTrueCoords(evt){
+   							     var newScale = SVGRoot.currentScale;
+   							     var translation = SVGRoot.currentTranslate;
+   							     TrueCoords.x = (evt.clientX - translation.x)/newScale;
+   							     TrueCoords.y = (evt.clientY - translation.y)/newScale;
+   							  };
+    						</script>
+    						
+							</svg>
+						   <!-- end  map_content-->
+						</div>
+						<!-- end  panel-body-->
+					</div>
+					<input type="hidden" id="roleName" value="#{loginBean.m_roleName}"/>
+					<h:commandButton value="退出" action="#{loginBean.logout()}" style="display:none"/>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">欢迎访问本系统                     V_2018.2.2</p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+    <ui:define name="js_content2">
+		<script type="text/javascript">
+        var stbInfo;
+		var oSvg = document.getElementById("svg_div");
+		var svg = document.getElementById("test");
+
+		var screenWidth = window.screen.width;
+		var screenHeight = window.screen.height;
+
+		//指定不同分辨率下viewreport、viewbox的大小
+		svg.style.width = screenWidth - 240 - 30 + "px";
+		if(screenWidth == 1920 &amp;&amp; screenHeight == 1080){
+			//标签相对屏幕的起始坐标(245, 133)
+			//火狐去菜单栏  画布宽高(1650, 777)  带菜单栏(1650, 748)   (1650, 742)去  欢迎访问本系统
+			//svg.style.width = "100%";
+			//svg.style.height = "777px";
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.y = (754 - 562)/2 ;
+			svg.viewBox.baseVal.width = 1194;
+			svg.viewBox.baseVal.height = 562;
+		} else if(screenWidth == 1366 &amp;&amp; screenHeight == 768){
+			//(1090, 465)   (1090, 430)
+			console.log("1366*768");
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.y = (754 - 509)/2 + 50;
+			svg.viewBox.baseVal.width = 1194 ;
+			svg.viewBox.baseVal.height = 509;
+		} else if(screenWidth == 1360 &amp;&amp; screenHeight == 768){
+			//(1084, 465)   (1084, 430)
+			console.log("1360*768");
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.y = (754 - 509)/2 + 50;
+			svg.viewBox.baseVal.width = 1194;
+			svg.viewBox.baseVal.height = 509;
+		}else if(screenWidth == 1280 &amp;&amp; screenHeight == 1024){
+			//(1010, 720) + 欢迎访问本系统    不加(1010, 685)
+			svg.style.height = window.innerHeight - 139 - 26 + "px";
+			svg.viewBox.baseVal.width = 1194;
+			svg.viewBox.baseVal.height = 754;
+		} else if(screenWidth == 1280 &amp;&amp; screenHeight == 720){
+			//(1010, 417)
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.y = (754 - 493)/2 + 35;
+			svg.viewBox.baseVal.width = 1194;
+			svg.viewBox.baseVal.height = 493;
+		} else if(screenWidth == 1152 &amp;&amp; screenHeight == 864) {
+			//(882, 560)   (882, 525)
+			svg.style.height = window.innerHeight - 139 - 26 + "px";
+			svg.viewBox.baseVal.width = 1186;
+			svg.viewBox.baseVal.height = 752;
+		} else if(screenWidth == 1024 &amp;&amp; screenHeight == 768){
+			//(754, 465)    (754, 430)
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.x = (1194 - 1056)/2;
+			svg.viewBox.baseVal.y = (754 - 650)/2;
+			svg.viewBox.baseVal.width = 1056;
+			svg.viewBox.baseVal.height = 650;
+		} else if(screenWidth == 800 &amp;&amp; screenHeight == 600){
+			//(530, 297)   (530, 262)
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.x = (1194 - 825)/2;
+			svg.viewBox.baseVal.y = (754 - 507)/2 + 30;
+			svg.viewBox.baseVal.width = 825;
+			svg.viewBox.baseVal.height = 507;
+		} else{
+			svg.style.height = window.innerHeight - 139 - 8 + "px";
+			svg.viewBox.baseVal.y = (754 - 562)/2 ;
+			svg.viewBox.baseVal.width = 1194;
+			svg.viewBox.baseVal.height = 562;
+		}     
+
+		var svgX = oSvg.offsetWidth;
+		var svgY = oSvg.offsetHeight;
+
+		//权限验证
+		var roleName = $("#roleName").val();
+		if(roleName.indexOf("system_admin") &gt;= 0 || roleName.indexOf("device_admin") &gt;= 0){
+			oSvg.onmousemove = function(ev){
+				var oEvent = ev || event; //兼容处理
+				var oFrom = oEvent.fromElement || oEvent.relatedTarget;//兼容处理
+				if(oFrom &amp;&amp; oSvg.contains(oFrom)){
+					return;
+				} 
+
+				chooseToAddDevice(ev.clientX, ev.clientY);
+			}
+			oSvg.onmouseout = function(ev){
+				var myhint = document.getElementById("hint");
+				if(myhint != null)
+					myhint.style.display = "none";
+			}
+
+			svg.ondblclick = function(evt){
+	    		var x = evt.clientX - 245;
+				var y = evt.clientY - 132;
+
+				//换算坐标
+				var px = Math.round(x * svg.viewBox.baseVal.width / svgX + svg.viewBox.baseVal.x);
+		    	var py = Math.round(y * svg.viewBox.baseVal.height / svgY + svg.viewBox.baseVal.y);
+		    	
+		   		window.location.href = "../admin/add_device.jsf?positionX=" + px + "&amp;" + "positionY=" + py;
+		    }
+		} 
+		
+		function chooseToAddDevice(x, y){
+
+			var myhint = document.getElementById("hint");
+			if(myhint == null){
+				myhint = document.createElement("div"); 
+				myhint.setAttribute("id","hint"); 
+				myhint.style.position="absolute"; 
+				myhint.style.lineHeight="10px"; 
+				myhint.style.width="100px"; 
+				myhint.style.height="20px";
+				myhint.style.color= "black";
+				myhint.innerHTML = "双击添加设备";
+			    document.body.appendChild(myhint);
+			}
+			
+		    myhint.style.left= x- 35 + "px";
+		    myhint.style.top= y + 25 + "px";
+		    myhint.style.display= "block";
+		}
+
+		$(document).ready(function() {
+			$("#device_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#0090FF');
+			$("#li_2").css('color', '#88AEF1');
+			$("#li_3").css('color', '#88AEF1');
+			$("#li_4").css('color', '#88AEF1');	
+			getCPEBeanList(setCPEBeanList);	
+  		});
+		
+		function setCPEBeanList(data){
+			 var i;
+		    if(data.length != 0){
+				if(screenWidth == 1920 &amp;&amp; screenHeight == 1080){
+					getStatusCircle(data, 4);
+				} else if(screenWidth &lt;= 1366 &amp;&amp; screenWidth &gt;= 1280){
+					getStatusCircle(data, 5);
+				} else if(screenWidth &lt;= 1152 &amp;&amp; screenWidth &gt;= 1024){
+					getStatusCircle(data, 6);
+				} else if(screenWidth == 800 &amp;&amp; screenHeight == 600){
+					getStatusCircle(data, 7);
+				} else{
+					getStatusCircle(data, 4);
+				}  
+		    }
+
+		  }
+		    
+		
+        function showInfo(data){
+        	var text=document.getElementById("text");
+			      text.innerHTML=data;
+            }
+		function succeccCallback(data){
+			if(data != "CPE_UPDATE_SUCCESS")
+				alert(data);
+		}
+		function updatePosition(device_id, x, y) {
+			updateCPEPosition(device_id, Math.round(x), Math.round(y), succeccCallback);
+		}
+
+		function getStatusCircle(data, r){
+			stbInfo =data;
+			var i;
+			var html = '<image id="map" x="0" y="0" width="1194" height="754" pointer-events="none"/>';
+			for(i=0 ;i != data.length;i++){
+				var name = data[i].name;
+				var status = data[i].status;
+				
+				
+				var showStatus = (status=='online'?'green':'red');
+				
+				var cpe_info_html = 
+					'<circle id="circle_'+data[i].id+'" name="位置：'+data[i].name+'" cx="'+data[i].cx+'" cy="'+data[i].cy+'" r="'+r+'"  fill="'+showStatus+'"/>';
+                    if(i==data.length-1){
+                       
+					var cpe_info_html = 
+					'<circle id="circle_'+data[i].id+'" name="位置：'+data[i].name+'" cx="'+data[i].cx+'" cy="'+data[i].cy+'" r="'+r+'"  fill="'+showStatus+'"/><svg  id="showtips" x="'+data[i].cx+'" y="'+data[i].cy+'" width="220" height="100"  style="display:none"><rect align="center" point-events="none" draggable="false" x="10" y="10" rx="20" ry="20" width="90%" height="60%" style="fill:white;stroke:#ddd;stroke-width:5;fill-opacity:1;stroke-opacity:0.9;box-shadow:0 3px 18px rgba(0,0,0,.5);"/><text id="text1"  x="20" y="45" style="margin:auto">'+data[i].name+'</text></svg>';
+                    }
+				
+				html += cpe_info_html;
+				$("#test").html(html);
+			}
+
+			//指定背景图片的图片源（直接指定xlink:href和xmlns属性会出错）
+			var svgimg = svg.getElementById("map");
+            svgimg.setAttributeNS('http://www.w3.org/1999/xlink','href', 'img/wuxicity.JPG');
+		}
+
+        $(window).bind('beforeunload',function(){
+	    	console.log("您已退出登录33333!");
+	    	$(":submit[value='退出']").each(function (){
+				$(this).click();
+			});
+	    }); 
+		
+	</script>
+	</ui:define>
+</ui:composition>

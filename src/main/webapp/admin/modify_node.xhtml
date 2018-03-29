@@ -1,0 +1,217 @@
+<ui:composition template="default_settings.xhtml"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:my="http://java.sun.com/jsf/composite/components"
+         xmlns:rich="http://richfaces.org/rich">
+     <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>系统设置</li>
+				<li class="active">修改参数</li>
+			</ol>
+
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading"  >
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">修改参数基本信息</h4>
+						</div>
+
+                        <div class="panel-body">
+						    <h:form>
+
+								<p id="p_operator_message" style="display:none;">#{systemSettingController.m_message}</p>
+								<p></p>
+								
+								<div class="table-responsive">
+                                 <div class="panel-heading" style="float:left;">
+                                	<div style="font-size:1.5em; float:left;">
+                           		 	<strong>基本信息：</strong> 
+                           		 	</div>
+                           		 	<i id="basicInfo" class="fa fa-2x fa-chevron-circle-up" data-toggle="collapse" style="cursor:pointer;"
+                                   	aria-expanded="true" data-target="#collapseOne" onclick="javascript:changepic(this)"></i>
+                                 </div>
+                                 <div style="margin:0;padding:0;width:100%;height:1px;background-color:#303030;overflow:hidden;"></div>
+                                 <div id="collapseOne" class="panel-collapse collapse in">
+									<table class="table">
+										<tbody>
+                                            <tr>
+                                                <td style="vertical-align: middle;">*名称</td>
+                                                <td><h:inputText id="abbr_name" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.abbr_name}" readonly="true"/>
+                                                        <h:message for="abbr_name" />
+                                                        </td>  
+                                            	<td/>
+                                            </tr>
+                                            
+                                             <tr>
+                                                <td style="vertical-align: middle;">*路径</td>
+                                                <td><h:inputText id="path" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.node_path}" readonly="true"/>
+                                                        <h:message for="path" /></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                            <td style="vertical-align: middle;">数据类型</td>
+                                                <td><h:inputText id="data_type" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.type}" readonly="true"/>
+                                                        <h:message for="data_type" /></td>
+                                            </tr>
+                                            
+                                            <tr>
+												<td style="vertical-align: middle;">值类型</td>
+												<td><h:selectOneMenu id="valueType" onchange="changeType()"
+														class="form-control" style="height:30px;width:100%;" 
+														value="#{systemSettingController.m_param.value_type}">
+														<f:selectItem itemLabel="basic" itemValue="basic"></f:selectItem>
+														<f:selectItem itemLabel="enum" itemValue="enum"></f:selectItem>
+												     </h:selectOneMenu> <h:message for="valueType" /></td>
+											</tr>
+                                            
+                                            <tr id="basic2" style="display: none">
+                                            <td style="vertical-align: middle;">最小值</td>
+                                                <td><h:inputText id="min_value"  class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.min_value}"/>
+                                                        <h:message for="min_value" /></td>
+                                            	<td><div style="color:#ff0000;">  </div></td>
+                                            </tr>
+                                            
+                                            <tr id="basic1" style="display: none">
+                                            <td style="vertical-align: middle;">最大值</td>
+                                                <td><h:inputText id="max_value"  class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.max_value}"/>
+                                                        <h:message for="max_value" /></td>
+                                            	<td><div style="color:#ff0000;">  </div></td>
+                                            </tr>
+                                            
+                                            <tr id="enum" style="display: none">
+                                            <td style="vertical-align: middle;">枚举值</td>
+                                                <td><h:inputText id="other_value"  class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.other_value}"/>
+                                                        <h:message for="other_value" /></td>
+                                            	<td><div style="color:#ff0000;">  </div></td>
+                                            </tr>
+                                     </tbody>
+									</table>
+									</div>   
+								</div>
+							
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="detail" value="update" />
+								<div class="div_center_operator">
+	                       			<h:commandButton action="#{systemSettingController.modifyParam()}" value="修改" class="grey_black_button_css" />
+			                        <input type="button" onclick="javascript: window.location.href='../admin/node_setting2.jsf';" value="返回" class="grey_black_button_css" />
+		                        </div>
+		                        
+		                        <div class="table-responsive">
+                                 <div class="panel-heading" style="float:left;">
+                                	<div style="font-size:1.5em; float:left;">
+                           		 	<strong>中文名：</strong> 
+                           		 	</div>
+                           		 	<i id="basicInfo2" class="fa fa-2x fa-chevron-circle-up" data-toggle="collapse" style="cursor:pointer;"
+                                   	aria-expanded="false" data-target="#collapseTwo" onclick="javascript:changepic(this)"></i>
+                                 </div>
+                                 <div style="margin:0;padding:0;width:100%;height:1px;background-color:#303030;overflow:hidden;"></div>
+                                 <div id="collapseTwo" class="panel-collapse collapse in">
+									<table class="table">
+									      <tr>
+                                            <td style="vertical-align: middle; width: 28.9%;">*中文名</td>
+                                                <td><h:inputText id="name_zh" class="form-control" style="height:26px;width:100%;"
+                                                        value="#{systemSettingController.m_param.nameZh}"/>
+                                                        <h:message for="name_zh" /></td>
+                                                <td><div style="color:#ff0000;">  </div></td>
+                                            </tr>
+									</table>
+								</div>
+								<div class="div_center_operator">
+	                       			<h:commandButton action="#{systemSettingController.modifyParamNameZh()}" value="修改" class="grey_black_button_css" />
+			                        <input type="button" onclick="javascript: window.location.href='../admin/node_setting2.jsf';" value="返回" class="grey_black_button_css" />
+		                        </div>
+								</div>
+		                        
+						   </h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">
+                        欢迎访问本系统                     V_2017.8.30
+                    </p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+		$(document).ready(function() {
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}
+    		$("#system_settings").css('color', '#0090FF');
+    		$("#li_1").css('color', '#88AEF1');
+    		$("#li_2").css('color', '#88AEF1');
+    		$("#li_3").css('color', '#0090FF');
+    		$("#li_4").css('color', '#88AEF1');
+    		$("#li_5").css('color', '#88AEF1');
+    		
+    		changeType();
+    	});
+
+		function changepic(msg){
+	        var bs = document.getElementById(msg.id);
+            if((bs.getAttribute('aria-expanded')) == "false"){
+	            bs.setAttribute("class", "fa fa-2x fa-chevron-circle-up");
+		    }else if((bs.getAttribute('aria-expanded')) == "true"){
+		        bs.setAttribute("class", "fa fa-2x fa-chevron-circle-down");
+			} 
+		 }	
+
+    	function changeType(){
+    		var selectValue = $("[id$='valueType']").val();
+			if(selectValue == 'basic'){
+				$("#basic1").show();
+				$("#basic2").show();
+				$("#enum").hide();
+			} else if(selectValue == 'enum'){
+				$("#basic1").hide();
+				$("#basic2").hide();
+				$("#enum").show();
+			}else if(selectValue == null || selectValue == undefined){
+				$("#basic1").hide();
+				$("#basic2").hide();
+				$("#enum").hide();
+			}
+        }
+	</script>
+    </ui:define>
+
+</ui:composition>

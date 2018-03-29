@@ -1,0 +1,273 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+			</ol> 
+			
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">所有设备</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="form_infomation" prependId="false">
+								<p id="p_operator_message" style="display: none;">#{cPEController.m_cpeMessage}</p>
+								<p></p>
+								<div>
+								    <table>
+									  <tr>
+									  <td><h:outputLabel value="筛选："/></td>
+									  <td>
+									      <h:selectOneMenu id="status" class="form-control" style="height:22px;width:100%;
+									         padding-left: 12px; padding-top: 1px; padding-bottom: 1px;" 
+										     value="#{cPEController.m_status}"
+										     valueChangeListener="#{cPEController.selectByStatus}" immediate="true">
+										    <f:ajax render="table_information" event="valueChange" immediate="true"/>
+										    <f:selectItem itemLabel="全部" itemValue="all"></f:selectItem>
+										    <f:selectItem itemLabel="在线" itemValue="online"></f:selectItem>
+										    <f:selectItem itemLabel="离线" itemValue="offline"></f:selectItem>
+									      </h:selectOneMenu>  
+									   </td>
+									   <td><h:outputLabel style="margin-left:15px;" value="序列号查找：" /></td>
+									   <td><h:inputText style="width:100%; height: 22px; margin-left:5px;"
+										      id="query_serial_number"
+										      value="#{cPEController.m_cpeBean.m_serialNumber}">
+										      <f:ajax listener="#{cPEController.queryRecordListByAjax}"
+											  event="keyup" execute="form_infomation" onevent="onAjaxComplete" 
+											  render="table_information" />
+									          </h:inputText></td>
+									    <td><h:panelGroup rendered="#{loginBean.m_roleName != 'common_admin'}">
+										    <input type="button" onclick="javascript: openDeleteWindow()" 
+											value="删除" style="margin-left: 20px; color: black;" />
+									       </h:panelGroup></td>
+									   </tr>
+									</table>
+								</div>
+
+								<div
+									style="width: 100%; height: auto; max-height: 550px; overflow: hidden; overflow-y: auto; margin-top: 20px;">
+									<h:dataTable var="bean" id="table_information"
+										styleClass="table table-striped table-bordered nowrap"
+										value="#{cPEController.m_devices}">
+										<tr class="odd gradeX">
+											<h:column rendered="#{loginBean.m_roleName != 'common_admin'}">
+												<f:facet name="header">
+													<input type='checkbox' id='select_all'></input>
+												</f:facet>
+												<input type='checkbox' name="select_item"
+													value="#{bean.m_id}" />
+											</h:column>
+											
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+														#{bean.m_rowId}
+											</h:column>										
+											<h:column>
+												<f:facet name="header">设备序列号</f:facet>
+								  			            #{bean.m_serialNumber}
+								 			</h:column>
+											<h:column>
+												<f:facet name="header">设备名称</f:facet>
+														#{bean.m_deviceName}
+											</h:column>									 			
+											<h:column>
+												<f:facet name="header">位置</f:facet>
+								  			            #{bean.m_positionName}
+								 			</h:column>
+											<h:column>
+												<f:facet name="header">厂商</f:facet>
+														 #{bean.m_manuFacturer}
+											</h:column>
+											<h:column>
+												<f:facet name="header">在线状态</f:facet>
+														#{bean.m_status}
+											</h:column>
+											<h:column>
+												<f:facet name="header">操作</f:facet>
+												<a href="javascript:gotoDetailPage('#{bean.m_serialNumber}')"
+													style="color: black; font-size: 15px;">详细</a>
+												<!-- 	
+												<a href="javascript:gotoSetting('#{bean.m_serialNumber}')"
+													style="color: black; font-size: 15px; margin-left: 12%;">设置</a>  -->
+												
+												<a href="javascript:gotoDataModelOperate('#{bean.m_serialNumber}')"
+													style="color: black; font-size: 15px; margin-left: 12%;">数据模型树</a>
+
+											</h:column>
+										</tr>
+									</h:dataTable>
+								</div >
+								
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="size"
+									value="#{cPEController.m_queryCPEBean.size}" />
+								<h:inputHidden id="queryCount"
+									value="#{cPEController.m_queryCPEBean.count}" />
+								
+								<div id="judgeDisplay">
+									<h:outputLabel value="每页条数  "></h:outputLabel>
+									<h:inputText value="#{cPEController.m_queryCPEBean.size}" style=" width : 80px; height : 20px; margin-left:10px; margin-right:30px"/>
+									<h:outputLabel
+										value="共#{cPEController.m_queryCPEBean.max}页, 当前页码" ></h:outputLabel>
+									<h:inputText id="queryCurrent"
+										value="#{cPEController.m_queryCPEBean.current}" style="width : 80px; height : 20px; margin-left:10px; margin-right:30px" />
+									<h:commandButton
+										action="#{cPEController.queryCurrentPage}" value="跳转"></h:commandButton>
+									<h:commandButton
+										action="#{cPEController.queryPreviousPage}" value="上一页"></h:commandButton>
+									<h:commandButton action="#{cPEController.queryNextPage}"
+										value="下一页"></h:commandButton> 
+								</div>
+
+								<input type="hidden" id="hidden_detail_serial_number"
+									name="detail_serial_number" />
+									
+								<h:commandButton 
+									action="#{taskController.gotoDevicesDetailPage()}" value="跳转详情"
+									style="display:none;" />
+									
+								<input type="hidden" id="hidden_update_serial_number"
+									name="update_serial_number" />
+								<h:commandButton
+									action="#{taskController.gotoDataModelPage()}" value="数据模型"
+									style="display:none;" />
+								<h:commandButton action="#{cPEController.delDevice()}"
+									value="_删除" style="display:none;" />
+								<h:commandButton
+									action="#{cPEController.gotoDevicesUpdatePage()}" value="跳转设置"
+									style="display:none;" />
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#device_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#0090FF');
+				$("#li_3").css('color', '#88AEF1');
+				$("#li_4").css('color', '#88AEF1');	
+			});
+
+			function onAjaxComplete(data){
+			   var successStatus = 'success';
+			   if (data.status === successStatus) {
+				   console.info("seri = " + $("#query_serial_number").val());
+				  if($("#query_serial_number").val() != ""){
+					  $("#judgeDisplay").hide();
+				  }else{
+					  location.href = location.href;
+					  //$("#judgeDisplay").show();
+				  }
+			   }
+			}  
+		
+			function gotoDetailPage(m_serialNumber){
+				$("#hidden_detail_serial_number").attr("value",m_serialNumber);
+				$(":submit[value='跳转详情']").each(function (){
+					$(this).click();
+				});
+			} 
+
+			function gotoDataModelOperate(m_serialNumber){
+				$("#hidden_detail_serial_number").attr("value",m_serialNumber);
+				$(":submit[value='数据模型']").each(function (){
+					$(this).click();
+				});
+			} 
+
+			function gotoSetting(m_serialNumber){
+				$("#hidden_detail_serial_number").attr("value",m_serialNumber);
+				$(":submit[value='跳转设置']").each(function (){
+					$(this).click();
+				});
+			}
+
+		   function openDeleteWindow(){
+	            var count = 0;
+	            $("input[name='select_item']").each(function(){
+	                if ($(this).attr("checked") == "checked"){
+	                    count++;
+	                } 
+	            });
+	         	
+	            if (count == 0){
+	                $.msgbox({
+	                    type : 'error',
+	                    content : "请选择删除选项!",
+	                    icons: ['min', 'max', 'close'],
+	                    id: 1,
+	                    title : '操作错误'
+	                });
+	                return ;
+	            }  
+	         
+	            var contentInfo = "<div>确认删除所选设备并且删除与设备相关的任<br/>务与任务结果？</div>"; 
+	            $.msgbox({
+	                title:'提示',
+	                type: 'alert',
+	                content: contentInfo,
+	                icons: ['min', 'max', 'close'],
+	                id: 11,
+	                buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='_删除']")[0].click();
+	                    },
+	                    '取消': function() {
+	                        $.msgbox.closeAll();
+	                    }
+	                }
+	            });
+	            //确认弹窗的内容的刷新
+	            var msgbox = $.msgbox(11)
+	            if (msgbox) msgbox.content(contentInfo);
+	        }
+			
+	</script>
+	</ui:define>
+</ui:composition>

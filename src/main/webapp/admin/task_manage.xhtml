@@ -1,0 +1,309 @@
+<ui:composition template="default_device.xhtml"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:my="http://java.sun.com/jsf/composite/components"
+         xmlns:rich="http://richfaces.org/rich">
+     <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">任务管理</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading"  >
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">任务管理</h4>
+						</div>
+
+                        <div class="panel-body">
+						    <h:form prependId="false">
+								<p id="p_operator_message" style="display: none;">#{taskManageController.m_message}</p>
+								<p></p>
+								
+								<div class="table-responsive">
+                                 	<table style="margin-top: 1%;">
+									    <tr>
+									    <td style="color: #242a30;">选择任务:</td>
+									    <td>
+									    	<h:selectOneMenu id="all_task" class="form-control" style="height: 22px; width: 100%; 
+									    		margin-left: 6px; padding-left: 12px; padding-top: 1px; padding-bottom: 1px;"
+												value="#{taskManageController.m_taskId}" 
+												onchange="getFreData()"
+												valueChangeListener="#{taskManageController.getParamSetAndAll}" immediate="true">		
+												<f:ajax  render="table_set_information ping_dian task_status start_btn stop_btn all_task" event="valueChange"  immediate="true" />	
+												<f:selectItem itemLabel="" itemValue=""/>						
+											    <f:selectItems id="task_list" value="#{taskManageController.m_taskList}" 
+									        		var="p" itemLabel="#{p.ch_name}" itemValue="#{p.m_id}" />
+									         </h:selectOneMenu> 
+									    </td>
+									    <td style="padding-left: 3%;color: #242a30;">任务状态:</td>
+									    <td style="padding-left: 1%;"><h:inputText id="task_status" value="#{taskManageController.m_deviceTaskBean.m_status}" readonly="true"/>
+									    </td> 
+									     
+									  
+									    <td style="padding-left: 3%;color: #242a30;">
+									       <h:commandButton action="#{taskManageController.returnDeviceInfo()}" value="返回" style=" margin-left: 1px;"/>
+									    </td>
+										</tr>
+										<tr>
+										     <!--<td style="vertical-align: middle;color: #242a30;">是否周期上传:</td>  -->
+										     <td><h:selectOneMenu id="periodicEnable" rendered="false"
+												    class="form-control" style="height:22px;width:100%;margin-left: 6px; 
+												    padding-left: 12px; padding-top: 1px; padding-bottom: 1px;" 
+													value="#{taskManageController.m_taskParameterBean.periodicEnable}"
+													valueChangeListener="#{taskManageController.addPeriodEnable}" immediate="true">
+													<f:ajax  render="table_set_information period" event="valueChange"  immediate="true" />	
+													<f:selectItem itemLabel="是" itemValue="true"></f:selectItem>
+													<f:selectItem itemLabel="否" itemValue="false"></f:selectItem>
+												 </h:selectOneMenu>
+											 </td>
+											 <!--<td id="periodDispaly1" style="vertical-align: middle;padding-left: 45px; color: #242a30;">周期:</td> -->
+											 <td id="periodDispaly2">
+												 <h:selectOneMenu id="period" rendered="false"
+														class="form-control" style="height:22px;width:100%;margin-left: 6px; 
+														padding-left: 15px; padding-top: 1px; padding-bottom: 1px;"
+														value="#{taskManageController.m_taskParameterBean.period}" 
+														valueChangeListener="#{taskManageController.addPeriod}" immediate="true">
+														<f:ajax  render="table_set_information" event="valueChange"  immediate="true" />	
+														<f:selectItem itemLabel="" itemValue=""></f:selectItem>
+														<f:selectItems id="period_list" value="#{taskManageController.m_periodList}" 
+									        		          var="p" itemLabel="#{p.m_key}" itemValue="#{p.m_value}" />
+													</h:selectOneMenu>
+											  </td>
+										</tr>
+									</table>
+									<div>
+									</div>
+									<div id="default_set" class="table-responsive">
+										<h:outputLabel value="默认下发参数:" style="margin-top: 3%;"/>
+										<h:dataTable id="table_set_information" var="bean"
+											value="#{taskManageController.m_paramSetList}"
+											styleClass="table table-striped table-bordered nowrap">
+											<tr class="odd gradeX">	
+												<h:column>
+													<f:facet name="header">序号</f:facet>
+											        #{bean.m_rowId}
+										        </h:column>
+										        <h:column>
+													<f:facet name="header">参数名称</f:facet>
+					  			                    #{bean.m_namezh}
+					 				            </h:column>
+					 				            <h:column>
+													<f:facet name="header">参数值</f:facet>
+					  			                    #{bean.m_value}
+					 				            </h:column>
+					 				            <h:column>
+													<f:facet name="header">参数类型</f:facet>
+					  			                    #{bean.m_type}
+					 				            </h:column>
+	                                            <h:column>
+													<f:facet name="header">操作</f:facet>
+													 <h:panelGroup id="pg_change" rendered="#{bean.m_nodePath != 'Device.Task.Period' and bean.m_nodePath != 'Device.Task.PeriodicEnable'}">
+													 <a href="javascript: goToChangeValue('#{bean.m_id}', '#{bean.m_namezh}','#{bean.m_type}')"  style="color: black; margin-left: 5%;">修改或设置参数值</a>
+													 </h:panelGroup>
+													 
+													 <h:panelGroup id="pg_delete" rendered="#{bean.m_nodePath == 'Device.Task.Period' or bean.m_nodePath == 'Device.Task.PeriodicEnable'}">
+													 <a href="javascript: goToDeleteValue('#{bean.m_nodePath}')"  style="color: black; margin-left: 5%;">删除</a>
+													 </h:panelGroup>
+										        </h:column>											
+											</tr>
+											
+										</h:dataTable>
+									</div>	
+					                
+					                <div>
+										<h:commandButton id="start_btn" action="#{taskManageController.start()}" disabled="#{taskManageController.m_deviceTaskBean.m_status == 'running'}"
+											value="启动" style="float: right; width:50px; height:28px; margin-right: 10px;"/>
+									</div>
+									<div>
+
+									</div>
+								</div> 
+		                        
+								<!-- 阀值设置弹窗 -->
+								<div id="putout" class="putout panel panel-primary">
+									<div class="panel-heading">设置参数值</div>
+									<div class="panel-body">
+										<div class="form-group">
+											<h:outputLabel style="padding-left: 50px;" value="参数名称:" />
+											<h:outputText id="set_param_path" style="margin-left: 10px;" value=""/>
+										</div>
+										
+										<div class="form-group">
+											<h:outputLabel style="padding-left: 50px;" value="数值:" />
+											<h:inputText id="set_value" style="margin-left: 5px; width:100px; height: 22px; text-align: center;"
+												value="#{taskManageController.m_paramSetBean.m_value}"/>
+												
+										</div>
+										  
+										<div class="form-group">
+											<input type="button" style="background:#337ab7;width:50px; height:28px; 
+												margin-top: 20px; margin-left: 60px; color:#fff;" 
+												onclick="closeUpdateWindow()" value="取消" />
+						
+											<input type="button" onclick="changeParamSetValue()" style="background:#337ab7; color:#fff;
+												width:50px; height:28px; margin-top: 20px; margin-left: 80px;" value="确定"/>
+										</div>
+										<input type="hidden" name="window_node_id" id="window_node_id"/>
+									</div>
+								</div>
+								
+								<input type="hidden" id="hidden_node_id" name="node_id" />
+		                        <h:commandButton action="#{taskManageController.changeParamSetValue}" value="修改默认值"  style="display: none;"/>
+		                        <h:commandButton action="#{taskManageController.deleteParamSet}" value="移除参数"  style="display: none;"/>
+						   </h:form>
+						</div>
+					</div>					
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<div id="fre_data">
+			频点(10KHz)：<br/>21900,22700 ,24300 ,25100 ,25900 , 26700 ,27500 , 29100,29900, 30700, 31500, 32300,  331000, 339000, 347000, 355000,363000, 371000, 379000,
+			38700, 39500, 403000, 41100, 41900,42700,43500, 44300, 4510, 45900, 47400 ,54600,55400,56200,57000,57800, 58600, 59400,60200, 69000 ,69800
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">
+                        	欢迎访问本系统                     V_2017.8.30
+                    </p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+
+	<ui:define name="js_content2">
+		<script src="js/fredata.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+
+	    		$("#device_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#0090FF');
+				$("#li_3").css('color', '#88AEF1');
+				$("#li_4").css('color', '#88AEF1');	
+				
+	    		var paramType;
+	    	});
+		    
+	    	function closeUpdateWindow() {
+				document.getElementById("putout").style.visibility = "hidden";
+			}
+
+			function showTipsMessage(tips){
+	    		$.msgbox({
+	    			title : '提示',
+	    			type : 'alert',
+	    			content : tips,
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+    				buttons: ['确定'],	
+                    buttonEvents: {
+                        '确定': function() {
+                            $.msgbox.closeAll();
+                            $(document.getElementById("set_value")).val("");
+                        }
+                    }
+	    		});
+	    		//确认弹窗的内容的刷新
+	            var msgbox = $.msgbox(0)
+	            if (msgbox) msgbox.content(tips);
+		   }
+
+		   function goToChangeValue(paramSet_id, param_path,param_type){
+			    document.getElementById("putout").style.visibility = "visible";
+	    		document.getElementById("set_param_path").innerHTML = param_path;
+	    		document.getElementById("window_node_id").value = paramSet_id;
+	    		$(document.getElementById("set_value")).val("");
+	    		paramType = param_type;
+	    		console.info(paramType);
+		   }
+
+		   function changeParamSetValue(){
+			   var param_value = $(document.getElementById("set_value")).val();
+			   var reg;
+			   if(param_value == ""){
+				   showTipsMessage("参数不允许为空！");
+				   return;
+			   }else{
+				   console.info(paramType);
+				   if(paramType == "unsignedInt"){
+					   reg = new RegExp("^[1-9][0-9]{0,18}|0$");
+					   if(!reg.test(param_value)){
+						   showTipsMessage("参数超出指定范围！");
+						   return;
+					   }
+				   }else if(paramType == "int"){
+					   reg = new RegExp("^[1-9][0-9]{0,9}|^[-][1-9]{0,9}|0$");
+					   if(!reg.test(param_value)){
+						   showTipsMessage("参数超出指定范围！");
+						   return;
+					   }
+				   }else if(paramType == "string"){
+					   //do-nothing
+					   $(document.getElementById("p_operator_message")).html("");
+				   }else if(paramType == "boolean"){
+					   if(param_value != "true" &amp;&amp; param_value != "false"){
+						   showTipsMessage("请填写true或false！");
+						   return;
+				       }
+				   }
+			   }
+			  
+			   $(":submit[value='修改默认值']").each(function(){
+					$(this).click();
+				});
+			   
+		   }
+
+		   function getchoice(){
+				var selectValue = document.getElementById("periodicEnable").value;
+				if(selectValue == 'true'){
+					$("#periodDispaly1").show();
+					$("#periodDispaly2").show();
+				} else{
+					$("#periodDispaly1").hide();
+					$("#periodDispaly2").hide();
+				}
+			}
+
+			function goToDeleteValue(node_id){
+				$("#hidden_node_id").attr("value",node_id);	
+	    		$(":submit[value='移除参数']").each(function(){
+					$(this).click();
+				});
+			}
+
+
+		</script>
+    </ui:define>
+
+</ui:composition>

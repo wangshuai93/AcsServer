@@ -1,0 +1,211 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+				<li class="active">详细</li>
+				<li class="active">升级</li>				
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">升级</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="formid" prependId="false">
+
+								<!-- <p id="p_operator_message" style="display: none;">#{taskController.m_taskMessage}</p> -->
+								<p id="p_add_message" style="display: none;">#{taskController.m_taskMessage}</p>
+								<p></p>
+
+								<div class="table-responsive">
+									<div class="panel-heading" style="float: left;">
+										<div style="font-size: 1.5em; float: left;">
+											<strong>基本信息：</strong>
+										</div>
+										<i id="basicInfo" class="fa fa-2x fa-chevron-circle-up"
+											data-toggle="collapse" style="cursor: pointer;"
+											aria-expanded="true" data-target="#collapseOne"
+											onclick="javascript:changepic(this)"></i>
+									</div>
+									<div
+										style="margin: 0; padding: 0; width: 100%; height: 1px; background-color: #303030; overflow: hidden;"></div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<table class="table">
+											<tbody>
+												<tr>
+													<td width="10%" rowspan="11" align="right"></td>
+													<td style="width: 15%; vertical-align: middle;">序列号</td>
+													<td style="width: 50%;"><h:inputText readonly="true"
+															id="m_serialNumber" class="form-control"
+															style="height:30px;width:100%;" 
+															value="#{taskController.m_cpeBean.m_serialNumber}" /> 
+															<h:message for="m_serialNumber" /></td>
+													<td />
+												</tr>
+												
+												<tr id="CommandKey">
+												     <td style="vertical-align: middle;">CommandKey</td>
+												     <td><h:inputText id="commandKey" class="form-control" style="height:30px;width:100%;" 
+															value="#{taskController.m_upgradeParamter.commandKey}" /> 
+													 <h:message for="commandKey" /></td>
+												</tr>	
+												
+												<tr id="fileType">
+													<td style="vertical-align: middle;">文件类型</td>
+													<td>
+														<h:selectOneMenu id="file_type" 
+															class="form-control" style="height:30px;width:100%;"
+															value="#{taskController.m_upgradeParamter.fileType}" >
+															<f:selectItem itemLabel="1 Firmware Upgrade Image" itemValue="1 Firmware Upgrade Image"/>
+															<f:selectItem itemLabel="2 Web Content"  itemValue="2 Web Content"/>
+															<f:selectItem itemLabel="3 Vendor Configuration File" itemValue="3 Vendor Configuration File"/>
+														</h:selectOneMenu> <h:message for="file_type"/>
+													</td>
+												</tr>
+												
+												<tr id="URL">
+												     <td style="vertical-align: middle;">URL</td>
+												     <td><h:inputText id="url" class="form-control" style="height:30px;width:100%;" 
+															value="#{taskController.m_upgradeParamter.url}" /> 
+													 <h:message for="url" /></td>
+												</tr>												
+												
+												<tr id="FileSize">
+												     <td style="vertical-align: middle;">文件大小</td>
+												     <td><h:inputText id="fileSize" class="form-control" style="height:30px;width:100%;" 
+															value="#{taskController.m_upgradeParamter.fileSize}" />
+													 <h:message for="fileSize" /></td>
+												</tr>
+												
+												<tr id="DelaySeconds">
+												     <td style="vertical-align: middle;">延时时间</td>
+												     <td><h:inputText id="delaySeconds" class="form-control" style="height:30px;width:100%;" 
+															value="#{taskController.m_upgradeParamter.delaySeconds}" /> 
+													 <h:message for="delaySeconds" /></td>
+												</tr>
+																							
+											</tbody>
+										</table>
+									</div>
+								</div>
+								
+								<div class="div_center_operator">
+									<h:commandButton action="#{taskController.upgrade()}"
+										value="升级" class="grey_black_button_css" />
+									<h:commandButton class="grey_black_button_css"
+											action="#{taskController.returnDeviceInfo()}" value="返回" />
+								</div>
+
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+		$(document).ready(function() {
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}   
+
+    		$("#device_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#88AEF1');
+			$("#li_2").css('color', '#0090FF');
+			$("#li_3").css('color', '#88AEF1');
+			$("#li_4").css('color', '#88AEF1');	
+    	});
+
+		function changepic(msg){
+	        var bs = document.getElementById(msg.id);
+            if((bs.getAttribute('aria-expanded')) == "false"){
+	            bs.setAttribute("class", "fa fa-2x fa-chevron-circle-up");
+		    }else if((bs.getAttribute('aria-expanded')) == "true"){
+		        bs.setAttribute("class", "fa fa-2x fa-chevron-circle-down");
+			} 
+		 }		
+
+		function showMessage(){
+	    	var o = $("#p_add_message");
+	    	if (o == undefined) {
+	    		return ;
+	    	}
+	    	var message = o.html();
+	    	if (message == undefined) {
+	    		return ;
+	    	}
+
+	    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+	    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+	    		$.msgbox({
+	    			type : 'success',
+	    			content : $("#p_add_message").html(),
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+	    			title : '操作成功'
+	    		});
+	    	} else if (message != "") {
+	    		$.msgbox({
+	    			title : '提示',
+	    			type : 'alert',
+	    			content : $("#p_add_message").html(),
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+    				buttons: ['确定'],
+                    buttonEvents: {
+                        '确定': function() {
+                            $.msgbox.closeAll();
+                        }
+                    }
+	    		});
+	    	}
+	    }
+		
+		</script>
+		
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,232 @@
+@charset "utf-8";
+
+/* error window css */
+a {
+	font-size: 14px
+}
+
+.div_window {
+	position: absolute;
+	display: none;
+	border-style: solid;
+	border-width: 1px;
+	left: 50%;
+	top: 50%;
+	margin-left: -225px;
+	margin-top: -100px;
+	text-align: center;
+	z-index: 99;
+	border-color: red;
+	background: white;
+	width: 350px;
+	hight: 250px;
+}
+
+.div1 {
+	float: left;
+	width: 55%
+}
+
+.div2 {
+	float: left;
+	width: 100px
+}
+
+.div_title {
+	background: red;
+	font-weight: bloder;
+	height: 30px;
+	padding-top: 4px;
+	padding-left: 10px;
+}
+
+.div_title_info {
+	height: 20px;
+	color: white;
+	text-align: left;
+	background: red;
+	width: 330px;
+	float: left;
+	font: 16px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.div_window_close {
+	margin-top: -17px;
+	width: 25px;
+	text-align: center;
+	color: white;
+	background: red;
+	float: right;
+	font: 16px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.div_window_close a {
+	color: white;
+}
+
+.div_window_text {
+	color: black;
+	text-align: center;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	width: 300px;
+	margin: 0 auto;
+}
+
+/* recharge window css */
+.div_recharge_window {
+	position: absolute;
+	display: none;
+	border-style: solid;
+	border-width: 1px;
+	left: 50%;
+	top: 50%;
+	margin-left: -225px;
+	margin-top: -100px;
+	text-align: center;
+	z-index: 99;
+	border-color: #242A30;
+	background: white;
+	width: 300px;
+	hight: 250px;
+}
+
+.div_recharge_title {
+	background: #242A30;
+	height: 30px;
+	padding-top: 4px;
+	padding-left: 10px;
+}
+
+.div_recharge_title_info {
+	height: 20px;
+	color: white;
+	text-align: left;
+	background: #242A30;
+	width: 260px;
+	float: left;
+	font: 16px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.div_recharge_window_close {
+	width: 28px;
+	text-align: center;
+	color: white;
+	background: #242A30;
+	float: left;
+	font: 16px Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.div_recharge_window_close a {
+	color: white;
+}
+
+.div_recharge_window_text {
+	color: black;
+	text-align: right;
+	padding-bottom: 10px;
+	padding-top: 10px;
+	width: 200px;
+	margin: 0 auto;
+}
+
+.div_recharge_window_text table {
+	width: 190px;
+	margin: 0, auto, 0, auto;
+}
+
+/** 操作按钮  **/
+/* .grey_black_button_css {
+	background: #E3E3E3 none repeat scroll 0% 0%;
+	border: 1px solid #BBB;
+	border-radius: 3px;
+	box-shadow: 0px 0px 1px 1px #F6F6F6 inset;
+	color: #333;
+	font: bold 12px/1 "helvetica neue", helvetica, arial, sans-serif;
+	padding: 8px 0px 9px;
+	text-align: center;
+	text-shadow: 0px 1px 0px #FFF;
+	width: 150px;
+	margin-left: 30px;
+	padding-top: 4px; 
+} */
+
+.grey_black_button_css {
+	background: #E3E3E3 none repeat scroll 0% 0%;
+	border: 1px solid #BBB;
+	border-radius: 3px;
+	box-shadow: 0px 0px 1px 1px #F6F6F6 inset;
+	color: #333;
+	font: bold 12px/1 "helvetica neue", helvetica, arial, sans-serif;
+	padding: 8px 0px 9px;
+	text-align: center;
+	text-shadow: 0px 1px 0px #FFF;
+	width: 14%;
+	margin-left: 4%;
+	/* padding-top: 4px; */ 
+}
+
+.small_back_button_css{
+	text-align: center;
+	width: 40px;
+	height:18px;
+	margin-left:8px;
+}
+
+.small_back_button_page_css{
+	text-align: center;
+	/* width: 40px; */
+	height:18px;
+	margin-left:8px;
+}
+
+.small_back_button_cssss{
+	background: #E3E3E3 none repeat scroll 0% 0%;
+	border: 1px solid #BBB;
+	border-radius: 3px;
+	box-shadow: 0px 0px 1px 1px #F6F6F6 inset;
+	color: #333;
+	font: bold 12px/1 "helvetica neue", helvetica, arial, sans-serif;
+	padding: 0px 9px;
+	text-align: center;
+	text-shadow: 0px 1px 0px #FFF;
+	width: 45px;
+	height:18px;
+	margin-top: 20px;
+}
+
+.div_center_operator {
+	text-align: center;
+}
+
+.query_condition_input {
+	width: 142px;
+}
+.query_my_input {
+	width: 60px;
+}
+
+#query_condition label {
+	margin-left: 6px;
+}
+
+.invoice_bolder_me {
+	padding: 5px 20px 20px 20px;
+	margin-bottom: 10px;
+}
+
+.invoice_page_header_title {
+	font-family: 微软雅黑;
+	/* font-family:Arial, Verdana, sans-serif;*/
+}
+
+.margin_left_0px {
+	margin-left: 0px;
+}
+
+.important_mi_for_input_lable {
+	color: #ff0000;
+	font-style: normal;
+	margin-left: -15px;
+	font-size: 11px;
+}

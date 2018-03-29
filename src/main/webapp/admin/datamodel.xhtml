@@ -1,0 +1,224 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+				<li class="active">设备详情</li>
+				<li class="active">数据模型树</li>
+				
+			</ol> 
+			
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">数据模型树</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="form">							    
+								<p id="p_operator_message" style="display: none;">#{dataModelController.m_dataModelMessage}</p>
+								<p></p>
+								<div style="width: 30%; float: left;">
+					               <p:growl id="messages" showDetail="true"/>
+								   <p:tree value="#{dataModelController.root}" var="tree" selectionMode="single" selection="#{dataModelController.selectedNode}" >
+								       <p:ajax event="select" update=":form_detail" listener="#{dataModelController.onNodeSelect}" oncomplete="gotoRender()"/>
+								       <p:treeNode>
+								          <h:outputText value="#{tree}" />
+								       </p:treeNode>
+								   </p:tree>
+								</div>									
+							 </h:form>							
+						     <!-- 右侧开始 -->   
+						    										    
+						    <div style="width: 65%; float: right;">	
+						    	<h:form style="float: right;">
+									<h:commandButton style="color:black; margin-bottom: 8px;"
+										action="#{dataModelController.returnDeviceManage()}" value="返回" />
+						    	</h:form>
+						        <h:form id = "form_detail" >
+						        <h:outputText value="选中参数："/>	
+								<table id="table_detail" class="table table-bordered nowrap">
+								<tbody>
+								   <tr id="tr1">
+								      <td style="width:10%;">名称：</td>
+								      <td style="width:80%;"><h:outputText value="#{dataModelController.selectedNode}" style="width:180px"/></td>
+								       <td style="width:10%;">版本：</td>								      
+								       <td style="width:80%;"><h:outputText value="parameter.xlsx" style="width:180px"/></td>
+								   </tr>									      
+								   <tr id="tr2">
+								      <td style="width:10%;">最大值：</td>								      
+								      <td style="width:80%;"><h:outputText value="#{dataModelController.m_nodeDetailBean.max_value}" style="width:180px"/></td>
+								      <td style="width:10%;">最小值：</td>								      
+								      <td style="width:80%;"><h:outputText value="#{dataModelController.m_nodeDetailBean.min_value}" style="width:180px"/></td>
+								   </tr>
+								   <tr id="tr3">
+								      <td style="width:10%;">数据类型：</td>
+								      <td><h:outputText value="#{dataModelController.m_nodeDetailBean.type}" style="width:180px"/></td>
+								      <td style="width:10%;">可操作：</td>								      
+								      <td style="width:80%;"><h:outputText value="#{dataModelController.m_nodeDetailBean.rw}" style="width:180px"/></td>
+								   </tr>
+								   <tr id="tr4">
+								      <td style="width:10%;">路径：</td>								      
+								      <td style="width:80%;" colspan="3"><h:outputText value="#{dataModelController.m_nodeDetailBean.node_path}" style="width:180px"/></td>					          								      
+								   </tr>
+								   <tr>
+								      <td style="width:10%;">方法：</td>								      
+								      <td style="width:80%;">
+								      <h:selectOneMenu id="rpc_method" 
+										 class="form-control" style="height:30px;width:180px"
+										 value="#{dataModelController.rpc_parameterBean.method_name}"
+										 onchange="gotoRender()" >										
+										<f:selectItem itemLabel="GetParameterNames" itemValue="GetParameterNames"/>
+										<f:selectItem itemLabel="GetParameterValues" itemValue="GetParameterValues"/>
+										<f:selectItem itemLabel="GetParameterAttributes" itemValue="GetParameterAttributes"/>
+										<f:selectItem itemLabel="SetParameterValues" itemValue="SetParameterValues"/>
+										<f:selectItem itemLabel="SetParameterAttributes" itemValue="SetParameterAttributes"/>
+										<f:selectItem itemLabel="AddObject"  itemValue="AddObject"/>
+										<f:selectItem itemLabel="DeleteObject" itemValue="DeleteObject"/>
+									    </h:selectOneMenu> 						    									     
+									  </td>	
+									  <td colspan="2"><h:commandButton action="#{dataModelController.excuteRPC}"
+										      value="确定" class="grey_black_button_css" style="width:80px"/></td>								  		
+								    </tr>
+								    
+								    <tr id="other" style="display: none">		
+								       <td style="width:10%;">设置值：</td>								      
+								       <td style="width:80%;"><h:inputText value="#{dataModelController.rpc_parameterBean.value_set}" style="width:180px;height: 30px;"/></td>						      
+								       <td style="width:10%;">实例值：</td>								      
+								       <td style="width:80%"><h:inputText value="#{dataModelController.rpc_parameterBean.value_instance}" style="width:150px;height: 30px;"/></td>								       
+								    </tr>	
+								    
+								    <tr id="set_1" style="display: none">
+								       <td style="width:10%;">通知方式：</td>
+								       <td style="width:80%;"><h:selectOneMenu id="inform_method" 
+										 class="form-control" style="height:30px;width:180px"
+										 value="#{dataModelController.rpc_parameterBean.notification}" >
+										<f:selectItem itemLabel="关闭(0)" itemValue="0"/>
+										<f:selectItem itemLabel="开启(2)" itemValue="2"/>
+									    </h:selectOneMenu>
+									    </td>
+									   <td style="width:10%;">是否通知：</td>
+									   <td style="width:80%;"><h:selectOneMenu id="is_inform" 
+										 class="form-control" style="height:30px;width:105px"
+										 value="#{dataModelController.rpc_parameterBean.notificationChange}" >
+										<f:selectItem itemLabel="true" itemValue="1"/>
+										<f:selectItem itemLabel="false" itemValue="0"/>
+									    </h:selectOneMenu></td>
+								    </tr>
+								    <tr id="set_2" style="display: none">
+								        <td style="width:10%;">是否更改访问列表：</td>
+								        <td style="width:80%;"><h:selectOneMenu id="is_change" 
+										 class="form-control" style="height:30px;width:180px"
+										 value="#{dataModelController.rpc_parameterBean.accessListChange}" >
+										<f:selectItem itemLabel="true" itemValue="1"/>
+										<f:selectItem itemLabel="false" itemValue="0"/>
+									    </h:selectOneMenu></td>
+									    <td style="width:10%;">访问列表：</td>
+									    <td><h:inputText value="#{dataModelController.rpc_parameterBean.accessList}" /></td>
+								    </tr>
+								    <tr id="set_3" style="display: none">
+								       <td style="width:10%;">NextLevel：</td>
+									   <td style="width:80%;"><h:selectOneMenu id="is_nextLevel" 
+										 class="form-control" style="height:30px;width:105px"
+										 value="#{dataModelController.rpc_parameterBean.next_level}" >
+										<f:selectItem itemLabel="true" itemValue="1"/>
+										<f:selectItem itemLabel="false" itemValue="0"/>
+									    </h:selectOneMenu></td>
+								    </tr>
+								   <tr>
+								       <td style="width:10%;">结果：</td>
+								       <td colspan="3">#{dataModelController.rpc_result}</td>
+								   </tr>						
+								</tbody>
+								</table>
+								 
+								<input type="hidden" name="load" value="lazy" />					      
+           			            </h:form>	
+						      </div>	
+							  <!-- 右侧结束 -->                  
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+		$(document).ready(function() {
+			//左侧边栏选中
+    		$("#device_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#88AEF1');
+			$("#li_2").css('color', '#0090FF');
+			$("#li_3").css('color', '#88AEF1');
+			$("#li_4").css('color', '#88AEF1');
+			
+			gotoRender();
+    	});
+    	
+		function gotoRender(){
+			var name = $("[id$='rpc_method']").val();
+			if(name == "SetParameterAttributes"){
+				$("#other").hide();
+				$("#set_1").show();
+				$("#set_2").show();
+				$("#set_3").hide();
+			} else if(name == "GetParameterNames"){
+				$("#other").hide();
+				$("#set_1").hide();
+				$("#set_2").hide();
+				$("#set_3").show();
+			}else if(name == "SetParameterValues"){
+				$("#other").show();
+				$("#set_1").hide();
+				$("#set_2").hide();
+				$("#set_3").hide();
+			}else{
+				$("#other").hide();
+				$("#set_1").hide();
+				$("#set_2").hide();
+				$("#set_3").hide();
+			}					
+		}
+
+	    </script>
+	</ui:define>
+</ui:composition>

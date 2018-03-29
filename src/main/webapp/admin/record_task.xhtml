@@ -1,0 +1,243 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+				<li class="active">设备详细信息</li>
+				<li class="active">录制任务</li>
+			</ol> 
+			
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">录制文件</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="form_infomation" prependId="false">
+								<p id="p_operator_message" style="display: none;">#{recordTaskController.message}</p>
+								<p></p>
+								<div>
+								
+								   <h:commandButton action="#{recordTaskController.gobackDeviceInfo()}" value="返回" />
+								   <h:commandButton action="#{recordTaskController.startRecordTask()}" value="获取录制文件" />
+
+									<!-- 进度条 -->
+									<div class="jqmeter-content" style="display:none;"></div>
+									<div class="jq-container" style="display:none;">
+									<span><output id="downloadFile" style="margin-left: 40%;"/></span><br/>
+										<div class="jqmeter-show" style="height: 60px; margin-left: 40%; margin-right: 20px; 
+										      margin-top:-30px; margin-bottom: -30px; ">
+										</div>
+									</div>
+									<!-- 进度条 　END-->
+								</div> 
+								
+								<div class="table-responsive" style="margin-top:15px;">
+							      <h:dataTable var="bean" value="#{recordTaskController.resultList2}"
+										styleClass="table table-striped table-bordered nowrap">
+										<tr class="odd gradeX">	
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.rowId}
+									        </h:column>
+											<h:column>
+												<f:facet name="header">录制文件</f:facet>
+												  <a onclick="javascript:gotoDownload('#{bean.value}')">#{bean.value}</a>
+				 				            </h:column>
+										    <h:column>
+												<f:facet name="header">是否已下载至服务器</f:facet>
+				    			                #{bean.hasDownload == 'true' ? '是' : '否'} 
+				   			     	        </h:column>
+											<h:column>
+												<f:facet name="header">获取时间</f:facet>
+									 	        <h:outputText value="#{bean.reportTime}" converter="#{converterFactory.dateTimeConverter}"
+			                              			datePattern="yyyy-MM-dd HH:mm:ss" />		
+				      			  	        </h:column>
+				      			  	        <h:column>
+												<f:facet name="header">操作</f:facet>
+												<h:panelGroup rendered="#{bean.hasDownload}">
+												   <a href="/welcome-content/record/#{bean.fileName}">下载至本地</a>
+												</h:panelGroup>
+												<h:outputText rendered="#{!bean.hasDownload}" value="下载至本地" />
+				      			  	        </h:column>
+									    </tr>
+									</h:dataTable>
+								</div>	
+								
+								<div id="judgeDisplay">
+								    <input type="hidden" name="load" value="lazy" />
+								    <h:inputHidden id="queryCount" value="#{recordTaskController.queryBean.count}" />
+								    <h:inputHidden id="querySize" value="#{recordTaskController.queryBean.size}" />
+									<h:outputLabel value="每页条数"></h:outputLabel>
+									<h:inputText value="#{recordTaskController.queryBean.size}" />
+									<h:outputLabel value="共#{recordTaskController.queryBean.max}页, 当前页码"></h:outputLabel>
+									<h:inputText id="queryCurrent" value="#{recordTaskController.queryBean.current}" />
+									<h:commandButton action="#{recordTaskController.queryCurrentPage}" value="跳转"></h:commandButton>
+									<h:commandButton action="#{recordTaskController.queryPreviousPage}" value="上一页"></h:commandButton>
+									<h:commandButton action="#{recordTaskController.queryNextPage}" value="下一页"></h:commandButton> 
+								</div>
+                                   
+									<input type="hidden" id="hidden_download_fileName" name="download_fileName" />
+									<h:commandButton action="#{recordTaskController.download}" value="下载" style="display:none;" />
+									
+								    <h:commandButton action="#{recordTaskController.downloadTest}" value="下载测试" style="display:none;" />
+								    <h:inputHidden value="#{recordTaskController.currentGoal}" id="currentGoal" />
+								    <h:inputHidden value="#{recordTaskController.currentFile}" id="currentFile" />
+								    
+								    <h:commandButton value="获取当前进度" style="display:none;" >
+									    <f:ajax listener="#{recordTaskController.getProgress}"
+										    event="action" execute="form_information"
+										    render="currentGoal" />
+								    </h:commandButton>
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script src="../assets/js/jqmeter.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$("#device_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#0090FF');
+				$("#li_3").css('color', '#88AEF1');
+				$("#li_4").css('color', '#88AEF1');	
+
+			});
+			var gobalGoal ;
+            var currentPercent;
+            var intervalId ;
+            
+            function gotoDownload(fileName) {
+                var remind = fileName + "正在下载";
+            	$("#downloadFile").attr("value",remind);
+            	
+				$("#hidden_download_fileName").attr("value",fileName);
+				$(":submit[value='下载']").each(function(){
+					$(this).click();
+				});
+				
+				var goal = '100';
+			    gobalGoal = goal;
+			    currentPercent = (0/goal) *100;			
+				$(".jqmeter-content").css("display","block");
+				$(".jq-container").css("display","block");
+				$('.jqmeter-show').jQMeter({
+	                  goal:goal,
+	                  raised:'0',
+	                  width:'500px',
+	                  height:'30px',
+	                  counterSpeed:'1000'
+		        });
+					
+				intervalId =  setInterval(clickCurcent,1000);
+			}
+			
+			function gotoDownloadTest(fileName){
+				$("#hidden_download_fileName").attr("value",fileName);
+				$(":submit[value='下载测试']").each(function(){
+					$(this).click();
+				});
+				$("#downloadFile").attr("value",fileName);			
+				
+                var goal = '100';
+				gobalGoal = goal;
+				currentPercent = (0/goal) *100;			
+				$(".jqmeter-content").css("display","block");
+				$(".jq-container").css("display","block");
+				$('.jqmeter-show').jQMeter({
+                    goal:goal,
+                    raised:'0',
+                    width:'500px',
+                    height:'30px',
+                    counterSpeed:'1000'
+                    
+	             });
+				
+				intervalId =  setInterval(clickCurcent,1000);
+			}
+            
+			function showProgressBar(){
+                var currentGoal = $("#currentGoal").val();
+                var downloadFile = $("#currentFile").val();
+ 				if(isEmpty(currentGoal)){
+ 					currentGoal = 0 ;
+				}
+				currentPercent = currentGoal;
+				$(".jqmeter-content").css("display","block");
+				$(".jq-container").css("display","block");
+				if(currentPercent == 0){
+					$(".percent").html("");
+				}else{
+					$(".percent").html(currentPercent+"%");
+				}	
+				$(".inner-therm").animate({width:currentPercent+"%"},"slow")
+				if(currentPercent >= 100 || parseInt(currentGoal) == parseInt(gobalGoal)){
+					clearInterval(intervalId);
+					console.log("下载完成！");
+				} 
+   			}
+
+			function clickCurcent(){
+				 $(":submit[value='获取当前进度']").click();
+		    }	
+	       
+	        function isEmpty(data){
+	            return (data == "" || data == undefined || data == null) ? true :false;
+	        }
+
+	        //关闭进度条
+	         function close(){
+				$(".jqmeter-content").css("display","none");
+			    $(".jq-container").css("display","none");
+			    refresh();	
+	   	    }
+		   	    
+	        function refresh(){
+	   	   		window.location.reload(true);
+	   	   	}
+	</script>
+	</ui:define>
+</ui:composition>

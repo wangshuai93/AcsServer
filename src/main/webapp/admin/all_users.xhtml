@@ -1,0 +1,194 @@
+<ui:composition template="default_user.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:svg="http://www.w3.org/2000/svg"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>#{msgs.userManage}</li>
+				<li class="active">#{msgs.allUser}</li>
+			</ol>
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">#{msgs.allUser}</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="form_infomation" prependId="false">
+								<div class="table-responsive">
+
+									<p id="p_operator_message" style="display: none;">#{userManagerController.m_message}</p>
+									<p></p>
+
+									<h:dataTable id="table_information" var="bean"
+										value="#{userManagerController.m_userRecordList}"
+										styleClass="table table-striped table-bordered nowrap">
+										<tr class="odd gradeX">	
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.m_rowId}
+									        </h:column>
+											<h:column>
+												<f:facet name="header">用户名</f:facet>
+				  			                    #{bean.m_userName}
+				 				           </h:column>
+											<h:column>
+												<f:facet name="header">手机号</f:facet>
+				    			                #{bean.m_phoneNumber} 
+				   			     	            </h:column>
+											<h:column>
+												<f:facet name="header">部门</f:facet>
+									 	        #{bean.m_department}			
+				      			  	        </h:column>
+											<h:column>
+												<f:facet name="header">角色</f:facet>
+									 	        #{bean.m_roleName}	
+				      			  	        </h:column>
+                                            <h:column>
+												<f:facet name="header">操作</f:facet>
+												<!-- <a href="javascript: goTodeleteUser('#{bean.m_userId}')" style="color: black;">删除</a> -->
+												<input type="button" onclick="goTodeleteUser('#{bean.m_userId}')" value="删除"/>
+												<h:button onclick="goToModifyPassword('#{bean.m_userId}');return false;" style="margin-left: 5%;"
+													disabled="#{bean.m_roleName == 'system_admin'}" value="修改密码"></h:button>
+												
+									        </h:column>											
+									</tr>
+									</h:dataTable>
+								</div>
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="size"
+									value="#{userManagerController.m_queryBean.size}" />
+								<h:inputHidden id="queryCount"
+									value="#{userManagerController.m_queryBean.count}" />
+								<h:outputLabel value="每页条数"></h:outputLabel>
+								<h:inputText value="#{userManagerController.m_queryBean.size}" />
+								<h:outputLabel
+									value="共#{userManagerController.m_queryBean.max}页, 当前页码"></h:outputLabel>
+								<h:inputText id="queryCurrent"
+									value="#{userManagerController.m_queryBean.current}" />
+								<h:commandButton
+									action="#{userManagerController.queryCurrentPage}" value="跳转"></h:commandButton>
+								<h:commandButton
+									action="#{userManagerController.queryPreviousPage}" value="上一页"></h:commandButton>
+								<h:commandButton action="#{userManagerController.queryNextPage}"
+									value="下一页"></h:commandButton>
+								<div></div>
+								
+								<input type="hidden" id="hidden_user_id" name="user_id" />
+				                <h:commandButton action="#{userManagerController.deleteUser()}" value="删除用户" style="display:none;"/>
+				                <h:commandButton action="#{userManagerController.goToUpdateUserPassword()}" value="修改用户密码" style="display:none;"/>
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted" >
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#account_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#0090FF');
+				$("#li_2").css('color', '#88AEF1');
+				$("#li_3").css('color', '#88AEF1');
+
+				
+			});
+	
+			function goToModifyPassword(user_id){
+				$("#hidden_user_id").attr("value",user_id);
+				$.msgbox({
+	                title:'修改用户密码',
+	                type: 'alert',
+	                //content: contentInfo,
+	                icons: ['min', 'max', 'close'],
+	                id: 0,
+	                buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='修改用户密码']")[0].click();
+	                    },
+	                    '取消': function() {
+	                        $.msgbox.closeAll();
+	                    }
+	                }
+	            });
+			   var contentInfo = "<div>确认修改该用户密码?</div>"; 
+			   //确认弹窗的内容的刷新
+	            var msgbox = $.msgbox(0)
+	            if (msgbox) msgbox.content(contentInfo);
+			}
+			
+		   function goTodeleteUser(user_id){
+			   $("#hidden_user_id").attr("value",user_id);	
+			   $.msgbox({
+	                title:'删除设备信息',
+	                type: 'alert',
+	                //content: contentInfo,
+	                icons: ['min', 'max', 'close'],
+	                id: 11,
+	                buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='删除用户']")[0].click();
+	                    },
+	                    '取消': function() {
+	                        $.msgbox.closeAll();
+	                    }
+	                }
+	            });
+			   var contentInfo = "<div>确认删该用户?</div>"; 
+			   //确认弹窗的内容的刷新
+	           var msgbox = $.msgbox(11)
+	           if (msgbox) msgbox.content(contentInfo);
+		   }	
+
+		   function goToTestdeleteUser(user_id){
+			   $("#hidden_user_id").attr("value",user_id);	
+			   var flag = confirm("确定删除？");
+			   if(flag){
+				   $(":submit[value='删除用户']").each(function (){
+	  					$(this).click();
+	  				});
+			   }
+		   }	  
+	</script>
+	    
+	</ui:define>
+</ui:composition>
+

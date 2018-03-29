@@ -1,0 +1,114 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+				<li class="active">升级包管理</li>			
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">升级管理</h4>
+						</div>
+
+				    <div class="panel-body">
+				      <h:form id="add_accessory_form">
+						  <h:dataTable id="datatable1" cellpadding="0" cellspacing="0" border="0" class="table table-bordered" value="#{upgradeController.m_uploadFileList}" var="p">
+								<h:column>
+									<f:facet name="header">文件名</f:facet>#{p.name}
+								</h:column>
+								<h:column>
+									<f:facet name="header">操作</f:facet>
+									<input type="button" style="background:#337ab7;width:50px; height:28px; 
+										 color:#fff;" onclick="deleteFile('#{p.name}')" value="删除"/>
+								</h:column>
+						 </h:dataTable>
+						 
+						 <rich:fileUpload  id="uploadFile" name="uploadFile" style="width:100%;"
+							fileUploadListener="#{upgradeController.uploadListener}"
+							addLabel="添加" 
+							uploadLabel="上传"
+							clearAllLabel="清空"
+							clearLabel="删除"
+							deleteLabel="删除"
+							doneLabel="上传成功"
+							serverErrorUpLabel="服务器错误：上传失败"
+							noDuplicate="true"
+							listHeight="auto"
+							immediateUpload="true">
+						 <f:ajax render="datatable1 uploadFile" event="uploadcomplete" />
+						 </rich:fileUpload>
+						 <h:message for="add_accessory_form" style="color:red" />
+						 <input type="hidden" id="delete_file_name" name="delete_file_name"/>
+						 <h:commandButton value="删除文件" style="display:none" action="#{upgradeController.deleteFile}"/>										
+					 </h:form>					
+				  </div>					
+				</div>
+				<!-- end panel -->
+			 </div>	
+			 <!-- end col-10 -->
+			</div>		
+			<!-- end row -->			
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">		
+			$(document).ready(function() {
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+
+	    		$("#device_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#88AEF1');
+				$("#li_3").css('color', '#0090FF');
+				$("#li_4").css('color', '#88AEF1');	
+	    	});
+	
+	    	function deleteFile(name){
+	    		$("#delete_file_name").attr("value", name);
+	    		$(":submit[value='删除文件']").each(function(){
+					$(this).click();
+				});
+	        }
+		</script>
+		
+	</ui:define>
+
+</ui:composition>

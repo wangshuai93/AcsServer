@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+<!--<![endif]-->
+<h:head>
+    <meta charset="utf-8" />
+    <title>ACS 服务器</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../assets/css/animate.min.css" rel="stylesheet" />
+    <link href="../assets/css/style.min.css" rel="stylesheet" />
+    <link href="../assets/css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../assets/css/theme/default.css" rel="stylesheet" id="theme" />
+    <link href="../assets/css/my.css" rel="stylesheet" />
+    <link href="../assets/css/tipso.min.css" rel="stylesheet" />
+                <link href="css/popDiv.css" rel="stylesheet" />
+    
+    <link href="css/sucaijiayuan.css" rel="stylesheet" type="text/css"/>
+	
+	<link href="../assets/css/rcswitcher.min.css" rel="stylesheet" />
+	
+    <link href="css/div_window.css" rel="stylesheet" />
+    <link href="css/jquery.msgbox.css" rel="stylesheet" />
+    <link href="css/chosen.css" rel="stylesheet"/>
+    <link href="js/skin/WdatePicker.css" rel="stylesheet" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+    
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../assets/plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <link href="../assets/plugins/ionRangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="../assets/plugins/ionRangeSlider/css/ion.rangeSlider.skinModern.css" rel="stylesheet" />    
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+    
+    <link href="../assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+     
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../assets/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    
+    <ui:insert name="css_content">
+    </ui:insert>
+    
+</h:head>
+<h:body class="pace-done">
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
+    
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade in page-sidebar-fixed page-header-fixed ">
+        <!-- begin #header -->
+        <div id="header" class="header navbar navbar-default navbar-fixed-top">
+            <!-- begin container-fluid -->
+            <div class="container-fluid " >
+                <!-- begin mobile sidebar expand / collapse button -->
+                <div class="navbar-header" >
+                </div>
+                <h:form id="employee_top_menu_bar" >
+					<!-- begin header navigation right -->
+					<ul class="nav navbar-nav navbar-left" style="margin-left: 210px">
+						<li ><a href="../admin/templates/default_device.jsf"><strong>设备管理</strong></a></li>
+						<li ><a href="../admin/templates/default_user.jsf"><strong>帐户管理</strong></a></li>
+					</ul>
+				</h:form>
+         
+                <!-- end mobile sidebar expand / collapse button -->
+               <h:form id="employee_top_bar">
+					<!-- begin header navigation right -->
+					<ul class="nav navbar-nav navbar-right">
+						<li >欢饮您:#{loginUserStatusInfo.m_userName}  角色:#{loginUserStatusInfo.m_roleNameZh}</li>
+						<li ><h:commandLink action="#{loginBean.logout()}"><strong>退出</strong></h:commandLink></li>
+					</ul>
+				</h:form>
+         
+                <!-- end header navigation right -->
+            </div>
+            <!-- end container-fluid -->
+        </div>
+        <!-- end #header -->        
+		<input type="hidden" id="sessionRemoveInSetting"
+			value="#{loginUserStatusInfo.m_autoLogout}" /> 
+		<input type="hidden"
+			id="sessionRemoveMuniteInSetting"
+			value="#{loginUserStatusInfo.m_muniteForLogout}" />
+        <h:form id="update_session" style="display:none;">
+            <p:poll interval="10" listener="#{personalInfoController.updateSession}" update="update_session" ></p:poll>
+        </h:form>
+
+        <ui:insert name="content">
+            <!-- [Template content will be inserted here, data in the panel] -->
+        </ui:insert>   
+		<div style="display: none" class="bg" id="bg"></div>
+		<!-- pop dialog end -->
+    </div>
+    <!-- end page container -->
+    
+    <!-- 由于primefaces的图表的所用到的jquery类库和版本不兼容，所以需要画图的需要使用次模板 -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="../assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="../assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+    
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="../assets/plugins/DataTables/js/jquery.dataTables.js"></script>
+    <script src="../assets/plugins/DataTables/js/dataTables.colVis.js"></script>
+    <script src="../assets/js/table-manage-colvis.demo.min.js"></script>
+    <script src="../assets/js/apps.min.js"></script>
+    <script src="../assets/js/tipso.min.js"></script>
+    <script src="../assets/js/rcswitcher.min.js"></script>
+    <script src="js/jquery.msgbox.i18n.js"></script>
+    <script src="js/jquery.msgbox.js"></script>
+    <script src="js/chosen.jquery.js"></script>
+    <script src="js/WdatePicker.js" ></script>
+    <script src="js/total_message.js" ></script>
+    <script src="../assets/plugins/bootstrap-wizard/js/bwizard.js"></script>
+	<script src="../assets/js/form-wizards.demo.min.js"></script>
+	<script src="js/rest.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+    <script>
+    $(document).ready(function() {
+        App.init();
+        TableManageColVis.init();
+        
+    });
+
+
+    function showMessage(){
+    	var o = $("#p_operator_message");
+    	if (o == undefined) {
+    		return ;
+    	}
+    	var message = o.html();
+    	if (message == undefined) {
+    		return ;
+    	}
+    	
+    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+    		// sweetAlert("操作成功", $("#p_operator_message").html(), "success");
+    		// $.jMessageBox.show("系统信息",$("#p_operator_message").html()+"\n");
+    		$.msgbox({
+    			type : 'success',
+    			content : $("#p_operator_message").html(),
+    			icons: ['min', 'max', 'close'],
+        		id: 0,
+    			title : '#{msgs.operateSuccess}'
+    		});
+    	} else if (message != "") {
+    		// sweetAlert("操作出错", $("#p_operator_message").html(), "error");
+    		// $.jMessageBox.show("系统信息",$("#p_operator_message").html()+"\n");
+    		$.msgbox({
+    			type : 'error',
+    			content : $("#p_operator_message").html(),
+    			icons: ['min', 'max', 'close'],
+        		id: 0,
+    			title : '#{msgs.operateError}'
+    		});
+    	}
+    }
+	
+	    
+    </script>
+    
+    <script>
+	$(function() {
+		// 悬浮窗口
+		$(".yb_conct").hover(function() {
+			$(".yb_conct").css("right", "5px");
+			$(".yb_bar .yb_ercode").css('height', '200px');
+		}, function() {
+			$(".yb_conct").css("right", "-127px");
+			$(".yb_bar .yb_ercode").css('height', '53px');
+		});
+		// 返回顶部
+		$(".yb_top").click(function() {
+			$("html,body").animate({
+				'scrollTop': '0px'
+			}, 300)
+		});
+	});
+	</script>
+    <ui:insert name="js_content">
+           <!--  [Template content will be inserted here, data in the panel] -->
+    </ui:insert>
+</h:body>
+</html>

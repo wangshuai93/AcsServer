@@ -1,0 +1,195 @@
+<ui:composition template="default_settings.xhtml"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:my="http://java.sun.com/jsf/composite/components"
+         xmlns:p="http://primefaces.org/ui"
+         xmlns:rich="http://richfaces.org/rich">
+     <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>系统设置</li>
+				<li class="active">所有参数</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading"  >
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">所有参数</h4>
+						</div>
+
+                        <div class="panel-body">
+						    <h:form id="node_information" >		
+						   		<p id="p_message" style="display: none;">#{dataModelController.m_message}</p>
+						   		
+						   		<div id="command" >
+                                <table>
+								     <tr>
+								       <td><h:outputLabel value="所有任务:"/></td>
+								       <td><h:selectOneMenu id="all_task" class="form-control" style="height: 22px; width: 130px;padding-left: 12px; padding-top: 1px; padding-bottom: 1px;"
+											value="#{dataModelController.m_taskId}">									
+										 <f:selectItems id="task_list" value="#{dataModelController.m_allTask}" 
+										        var="p" itemLabel="#{p.m_name}" itemValue="#{p.m_id}" />
+								         </h:selectOneMenu> 
+								         </td>
+										  <td>
+										     <p:commandButton value="添加关联" style="width: 100%; height: 25px;; color: black;"
+                                                 actionListener="#{dataModelController.displaySelectedMultiple(dataModelController.selectedNodes2)}"/>
+                                          </td>
+								          <td>
+								            <p:commandButton value="修改单个节点" style="width: 100%; height: 25px;; color: black;"
+                                               action ="#{dataModelController.displaySelectedOne(dataModelController.selectedNodes2)}"/>
+								          </td>
+								       <td>
+								         <p:commandButton value="查看任务参数"  style="color: black;width: 100%; height: 25px;"
+                                             action="#{dataModelController.checkRelevanceAdded}"/>
+								         </td>
+								     </tr>
+								</table>
+                                </div>
+                                
+                                <div id="datamodel_tree" style="width:100%;">
+                                  <p:tree value="#{dataModelController.root2}" var="doc" selectionMode="checkbox"
+                                      selection="#{dataModelController.selectedNodes2}" style="width:100%;margin-top:1%;">
+                                      <p:treeNode>
+                                           <h:outputText value="#{doc.name}"/>
+                                      </p:treeNode>
+                                  </p:tree>
+                                </div>		
+                                
+						   </h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">
+                        	欢迎访问本系统                     V_2017.8.30
+                    </p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+
+	<ui:define name="js_content">
+		<script>
+			$(document).ready(function() {
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+	    	});
+		    
+			//import message
+	    	/* function showMessage(){
+		    	var o = $("#p_message");
+		    	if (o == undefined) {
+		    		return ;
+		    	}
+		    	var message = o.html();
+		    	if (message == undefined) {
+		    		return ;
+		    	}
+
+		    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+		    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+		    		$.msgbox({
+		    			type : 'success',
+		    			content : $("#p_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '操作成功'
+		    		});
+		    	} else if (message != "") {
+		    		$.msgbox({
+		    			type : 'alert',
+		    			content : $("#p_message").html(),
+		    			icons: ['min', 'max', 'close'],
+		        		id: 0,
+		    			title : '提示',
+		    			buttons: ['确定'],
+	                    buttonEvents: {
+	                        '确定': function() {
+	                            $.msgbox.closeAll();
+	                        }
+	                    }
+		    		});
+		    		 var msgbox = $.msgbox(0)
+			         if (msgbox) msgbox.content($("#p_message").html());
+		    	}
+		    } */ 
+
+			function gotoAddRelevance(){
+				var tips = "确定添加所选任务与参数的关联！";
+			    $.msgbox({
+		    		title : '提示',
+		    		type : 'alert',
+		    		content : tips,
+		    		icons: ['min', 'max', 'close'],
+		        	id: 1,
+	    			buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='跳转添加关联']")[0].click();
+	                      },
+		                  '取消': function() {
+		                        $.msgbox.closeAll();
+		                  }
+	                   }
+		    	   });
+		    		//确认弹窗的内容的刷新
+		         var msgbox = $.msgbox(1)
+		         if (msgbox) msgbox.content(tips);
+		    }
+
+			function gotoModifyParam(){
+				 var tips = "确定修改选中节点！";
+			     $.msgbox({
+		    			title : '提示',
+		    			type : 'alert',
+		    			content : tips,
+		    			icons: ['min', 'max', 'close'],
+		        		id: 2,
+	    				buttons: ['确定', '取消'],
+	                    buttonEvents: {
+	                    	'确定': function() {
+	                    		$(":submit[value='跳转修改单个节点']")[0].click();
+		                    },
+		                    '取消': function() {
+		                        $.msgbox.closeAll();
+		                    }
+	                    }
+		    		});
+		    		//确认弹窗的内容的刷新
+		            var msgbox = $.msgbox(2)
+		            if (msgbox) msgbox.content(tips);
+			}
+		</script>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,325 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:svg="http://www.w3.org/2000/svg"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">所有设备</li>
+				<li class="active">任务结果</li>				
+			</ol>
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">任务结果：#{taskController.m_cpeBean.m_deviceName}</h4>
+						</div>
+
+						<div class="panel-body">
+						   <h:form id="form_infomation" prependId="false">
+						   <div>
+                        	 <table>
+                        	 <tr>    
+                        	    <td style="padding-top: 8px;"><h:outputLabel value="筛选    " /></td>                  	   								
+                        	    <td style="padding-top: 8px;"><h:outputLabel value="任务: " /></td>
+                                <td><h:selectOneMenu id="all_task" class="form-control" style="height: 22px; width: 100%; 
+									    margin-left: 6px; padding-left: 12px; padding-top: 1px; padding-bottom: 1px; color: black;"
+									    onchange="getListTaskChange()"
+										value="#{resultController.m_countResultQueryBean.m_taskId}" 
+										valueChangeListener="#{resultController.queryByTask}" immediate="true">		
+										<f:ajax  render="pg queryMax queryCurrent" event="valueChange" immediate="true" />	
+									    <f:selectItem itemLabel="" itemValue=""/>		
+									    <f:selectItems id="task_list" value="#{resultController.m_taskList}" var="p" itemLabel="#{p.ch_name}" itemValue="#{p.m_id}" />
+									 </h:selectOneMenu> 
+							    </td>
+							    
+							    <!-- add -->
+							    <h:panelGroup>
+							    <td style="padding-top: 5px;">
+                        			<h:outputLabel id="item_list_figure_text" value="选择呈现方式: " style="margin-left: 20%;"/>
+                        		</td>
+							 	<td style="font-size: 12px; color: black;">
+							 		<h:selectOneMenu id="item_list_figure" onchange="getListFigureChange()" 
+										class="form-control" style="height: 22px; width: 100%; margin-left: 6px; padding-left: 12px; 
+										padding-top: 1px; padding-bottom: 1px; color: black;">	
+										<f:selectItem itemLabel="列表" itemValue="display_list"></f:selectItem>
+										<f:selectItem itemLabel="图形" itemValue="display_figure"></f:selectItem>
+									</h:selectOneMenu>
+							 	</td>
+							 	</h:panelGroup>
+							 	
+							 	<td style="padding-top: 5px;">
+                        			<h:outputLabel style="margin-left: 20px;" for="query_begin_time" value="开始时间: "/>
+                        		</td>
+								<td>
+									<h:inputText value="#{resultController.m_resultQueryBean.m_beginTime}" 
+	                                    id="query_begin_time" readonly="ture" class="query_condition_input"
+	                              		onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" 
+	                              		converter="#{converterFactory.dateTimeConverter}"
+	                              		datePattern="yyyy-MM-dd HH:mm:ss" style="width: 90%;">
+	                              	</h:inputText>
+								</td>
+								<td style="padding-top: 5px;"><h:outputLabel for="query_end_time" value="结束时间: "/></td>
+								<td>
+									<h:inputText value="#{resultController.m_resultQueryBean.m_endTime}" 
+	                                    id="query_end_time" readonly="ture" class="query_condition_input"
+	                              		onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" 
+	                              		converter="#{converterFactory.dateTimeConverter}"
+	                              		datePattern="yyyy-MM-dd HH:mm:ss" style="width: 90%;">
+	                              	</h:inputText>
+								</td>
+								
+								<td><!-- <input type="button" onclick="javascript: queryByStartEndTime();" 
+									   value="查询" class="small_back_button_css"/> -->
+									<h:commandButton class="small_back_button_css"
+									action="#{resultController.queryTask()}"  value="查询"/>
+								</td>
+							   
+							    <td style="padding-left: 2%;color: #242a30;">
+									<h:commandButton action="#{resultController.returnDeviceInfo()}" value="返回"/>
+						        </td>		
+							   </tr>							
+                             </table>                                								
+                           </div>
+
+	                       <div id="choice_div" style="width: 100%;">
+	                           	<div style="display: inline-block;">
+	                           		<h:outputLabel value="图像选择: "/>
+	                           		<h:selectOneMenu id="item_choice_pic" onchange="getPicChoice()"
+										class="form-control" style="height:22px; width: 145px; color: black; font-size: 12px; margin-left: 6px; padding-left: 12px; 
+										padding-top: 1px; padding-bottom: 1px; display: inline-block;">	
+										<f:selectItem itemLabel="频率/信号强度" itemValue="frequency_signalStrength"></f:selectItem>
+										<f:selectItem itemLabel="其他" itemValue="combine"></f:selectItem>
+									</h:selectOneMenu>
+		                        </div>
+		                        
+	                           	<div style="display: inline-block; margin-left: 12px;">
+	                           		<div style="display: inline-block;">
+	                           			<h:outputLabel value="是否显示点坐标: "/>
+	                           		</div>
+	                           		<div style="display: inline-block;">
+	  	                         		<input id="displayCheckbox" type='checkbox' onchange="getCheckBox()"/>
+	                           		</div>
+	                           	</div>
+	                           	
+	                           	<div id="item_choice_td" style="display: inline-block; margin-left: 2%;">
+	                           		<div style="display: inline-block;">
+										<h:outputLabel value="选择图像坐标显示: "/>
+									</div>
+									<h:selectOneMenu id="item_choice" onchange="getchoice()" class="form-control" 
+										style="height:22px; width:145px; color: black; font-size: 12px; margin-left: 6px; 
+										padding-left: 12px; padding-top: 1px; padding-bottom: 1px; display: inline-block;">
+										<f:selectItem itemLabel="时间/误码率" itemValue="bitErrorRate"></f:selectItem>
+										<f:selectItem itemLabel="时间/信号强度" itemValue="signalStrength"></f:selectItem>
+										<!-- <f:selectItem itemLabel="时间/当前频点" itemValue="currentFrequency"></f:selectItem> -->
+										<!-- <f:selectItem itemLabel="时间/符号率" itemValue="symbolRate"></f:selectItem> -->
+										<f:selectItem itemLabel="时间/信噪比" itemValue="sinalToNoice"></f:selectItem>
+									</h:selectOneMenu>
+								</div>
+	                       </div>
+							
+						   <div id="datatable_div" style="margin-top: 1%;">	
+						       <div class="table-responsive" id="div_dataTable2">
+								  <h:panelGroup id="pg">
+							      <table id="table_info2" class="table table-striped table-bordered nowrap">
+							        <thead>
+							         <tr>
+							           <th>序号</th>
+							           <!-- <h:panelGroup rendered="#{resultController.isFullTask()=='false'}"> -->
+							           <ui:repeat var="bean" value="#{resultController.m_columnNameList}">
+							           <h:panelGroup>
+							           <th>#{bean.m_name} #{bean.m_unit}</th>
+							           </h:panelGroup>
+							           </ui:repeat>
+							           <!-- </h:panelGroup>  -->
+							           <th>上报时间</th>
+							           <h:panelGroup rendered="#{resultController.isConstellationTask()}">
+							           <th>操作</th>
+							           </h:panelGroup>
+							           <h:panelGroup rendered="#{resultController.isFullTask()}">
+							           <th>操作</th>
+							           </h:panelGroup>							           
+							         </tr>
+							         </thead>
+							         <tbody>
+							          <ui:repeat var="bean1" value="#{resultController.m_managedResultBean}">
+							            <tr>
+							              <td>#{bean1.m_rowId}</td>
+							              <!-- <h:panelGroup rendered="#{resultController.isFullTask()=='false'}"> -->
+							              <ui:repeat var="bean2" value="#{bean1.m_sortedValue}">
+							              
+							              <td style="white-space:pre-wrap;">#{bean2}</td>
+							              </ui:repeat>
+							              <!-- </h:panelGroup> -->
+							              <td>
+								              <h:outputText value="#{bean1.m_reportTime}"
+													converter="#{converterFactory.dateTimeConverter}" datePattern="yyyy-MM-dd HH:mm:ss"/>
+							               </td>
+							              <h:panelGroup rendered="#{resultController.isConstellationTask()}">
+							              <td>
+								              <h:commandButton class="small_back_button_css" type="button" style="width:60px" 
+								              onclick="javascript:viewplanisphere(&quot;#{bean1.m_countResultId}&quot;,&quot;#{bean1.m_sortedValue}&quot;);"
+															   value="星座图"/>
+							              </td>	
+							              </h:panelGroup>	
+							              <h:panelGroup rendered="#{resultController.isFullTask()}">
+							              <td>
+								              <h:commandButton class="small_back_button_css" type="button" style="width:90px" 
+								              onclick="javascript:viewfulldata(&quot;#{bean1.m_countResultId}&quot;,&quot;LEVEL&quot;);"
+															   value="信号强度/频点"/>
+								              <h:commandButton class="small_back_button_css" type="button" style="width:90px" 
+								              onclick="javascript:viewfulldata(&quot;#{bean1.m_countResultId}&quot;,&quot;SNR&quot;);"
+															   value="信噪比/频点"/>
+								              <h:commandButton class="small_back_button_css" type="button" style="width:90px" 
+								              onclick="javascript:viewfulldata(&quot;#{bean1.m_countResultId}&quot;,&quot;BER&quot;);"
+															   value="误码率/频点"/>															   															   
+							              </td>	
+							              </h:panelGroup>							              					               
+							            </tr>
+							          </ui:repeat>
+							        </tbody>
+							       </table>
+							       </h:panelGroup>
+								</div>	
+									
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="size" value="#{resultController.m_resultQueryBean.size}" />
+								<h:inputHidden id="queryCount" value="#{resultController.m_countResultQueryBean.count}" />
+                                <h:inputHidden id="querySize" value="#{resultController.m_countResultQueryBean.size}" />
+                                <h:outputLabel value="每页条数"></h:outputLabel>
+								<h:inputText value="#{resultController.m_countResultQueryBean.size}" style="width : 80px; height : 20px; margin-left:10px; margin-right:30px"/>
+								<h:outputLabel id="queryMax" value="共#{resultController.m_countResultQueryBean.max}页, 当前页码"></h:outputLabel>
+								<h:inputText id="queryCurrent" value="#{resultController.m_countResultQueryBean.current}" style="width : 80px; height : 20px; margin-left:10px; margin-right:30px"/>
+							    <h:commandButton
+							     action="#{resultController.queryCurrentPage}" value="跳转" />
+							    <h:commandButton 
+							     action="#{resultController.queryPreviousPage}" value="上一页"  />
+							    <h:commandButton
+							     action="#{resultController.queryNextPage}" value="下一页"/>
+							</div>
+							
+							<!-- ping_planisphere.js中按 m_device_id查找数据-->
+                        	<input type="hidden" name="m_device_id" value="#{resultController.m_resultQueryBean.m_device_id}"/>
+                        	<input type="hidden" name="m_serialNumber" value="#{resultController.m_countResultQueryBean.m_serialNumber}"/>
+                        	
+						</h:form>
+					</div>
+					
+					<!-- start svg -->
+					<div id="div_block">
+						<div id="text" style="text-align: center; background: #2D353C; margin-left: 1.5%; margin-top:0.1%; 
+							margin-right: 1.5%; height: 25px; padding-top: 1%; display: none;">							
+							</div> 
+						<div id="svg_draw" class="morris-inverse" style="background: #2D353C; margin-left: 1.5%; 
+							margin-right: 1.5%; display: none;"></div> 
+						
+						<div id="line_discription" style="background: #2D353C; margin-left: 1.5%; margin-right: 1.5%; 
+							height: 50px; padding-top: 1%; display: none;">
+							<div style="width: 12%; display: inline-block; margin-left: 4%;">
+								<div style="margin-left:5%; margin-top:2%; height: 2px; width: 100%; background: #00ACAC;"/>
+								<div style="margin-top: 3%; height: 20px; margin-left: 20%; color: #00ACAC;">时间/误码率</div>
+							</div>
+							
+							<div style="width: 12%;display: inline-block; margin-left: 8%;">
+								<div style="margin-top:2%; height: 2px; width: 100%; background: #008000;"/>
+								<div style="margin-top: 3%; height: 20px; margin-left: 13%; color: #008000;">时间/信号强度</div>
+							</div>
+							
+							<div style="width: 12%;display: inline-block; margin-left: 8%;">
+								<div style="margin-top:2%; height: 2px; width: 100%; background: #FF0000;"/>
+								<div style="margin-top: 3%; height: 20px; margin-left: 13%; color: #FF0000;">时间/当前频点</div>
+							</div>
+							
+							<div style="width: 12%;display: inline-block; margin-left: 8%;">
+								<div style="margin-top:2%; height: 2px; width: 100%; background: #FFA500;"/>
+								<div style="margin-top: 3%; height: 20px; margin-left: 13%; color: #FFA500;">时间/信噪比</div>
+							</div>
+							
+							<div style="width: 12%;display: inline-block; margin-left: 8%;">
+								<div style="margin-top:2%; height: 2px; width: 100%; background: #FF5B57;"/>
+								<div style="margin-top: 3%; height: 20px; margin-left: 16%; color: #FF5B57;">时间/符号率</div>
+							</div>
+						</div> 
+					</div>
+					<!-- start -->
+					<div id="div_block_full">
+						<div id="text_full" style="text-align: center; background: #2D353C; margin-left: 1.5%; margin-top:0.1%; 
+							margin-right: 1.5%; height: 25px; padding-top: 1%; display: none;">
+							<h:commandButton class="small_back_button_css" type="button" style="float:right;width:70px" 
+							onclick="javascript:viewfulldatalist();"
+							value="返回列表"/>							
+							</div> 
+						<div id="svg_draw_full" class="morris-inverse" style="background: #2D353C; margin-left: 1.5%; 
+							margin-right: 1.5%; display: none;"></div> 
+
+					</div>					
+					<div id="div_block_con">
+						<div id="text_con" style="text-align: center; background: #2D353C; margin-left: 1.5%; margin-top:0.1%; 
+							margin-right: 1.5%; height: 30px; padding-top: 1%; display: none;">
+							<h:commandButton class="small_back_button_css" type="button" style="float:right;width:70px"
+								              onclick="javascript:viewplanispherelist();"
+															   value="返回列表"/>
+							</div> 
+						<div id="svg_draw_con" class="morris-inverse" style="background: #2D353C; margin-left: 1.5%; 
+							margin-right: 1.5%; display: none;"></div> 
+					</div>
+					<h:inputHidden id="count_result_id_con" />					
+					<div id="white_block" style="height: 15px;"></div>
+					<!-- end svg -->
+					
+				  </div>
+				  <!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted" >
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+	<ui:define name="js_content2">
+		 <script src="js/d3.v3.min.js"></script>
+		 <script src="js/planisphere.js"></script>
+	     <script type="text/javascript">
+	     $(document).ready(function() {
+	    		$("#device_manage").css('color', '#0090FF');
+				$("#li_1").css('color', '#88AEF1');
+				$("#li_2").css('color', '#0090FF');
+				$("#li_3").css('color', '#88AEF1');
+				$("#li_4").css('color', '#88AEF1');	
+	    	});
+
+		</script>	    
+	</ui:define>
+</ui:composition>
+

@@ -1,0 +1,172 @@
+<html lang="zh"
+	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta charset="utf-8" />
+	<title> 分布式射频信号监控系统 </title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="assets/css/animate.min.css" rel="stylesheet" />
+	<link href="assets/css/style.min.css" rel="stylesheet" />
+	<link href="assets/css/style-responsive.min.css" rel="stylesheet" />
+	<link href="assets/css/theme/default.css" rel="stylesheet" id="theme" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+</h:head>
+<body>
+<div style=" no-repeat; height:600px; width:900px; position:absolute; top:50%; margin-top:-300px; left:50%; margin-left:-450px;">
+  
+</div>
+	<!-- begin #page-loader -->
+	<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+	<!-- end #page-loader -->
+	
+	<div class="login-cover">
+	    <div class="login-cover-image">
+	    <img src="assets/img/login-bg/bg_3.jpg" data-id="login-cover-image" alt="" />
+	    </div>
+	    <div class="login-cover-bg"></div>
+	</div>
+	<!-- begin #page-container -->
+	<div id="page-container" class="fade"/>
+	    <!-- begin login -->
+        <div class="login login-v2" data-pageload-addclass="animated flipInX">
+            <!-- begin brand -->
+            <div class="login-header" style="top: -60px;">
+                <div class="brand" style="width: 450px; margin-left: 15px;">               
+                                                                          分布式射频信号监控系统                            
+                </div>
+            </div>
+            <!-- end brand -->
+            <div class="login-content">
+            
+				<p></p>
+			
+          
+                <h:form id="update_session" class="margin-bottom-0">
+                    <div class="form-group m-b-25 f-s-16">
+                     	用户名： <h:inputText id="username" value="#{loginBean.m_userName}" styleClass="form-control input-lg" /> 
+                    </div>
+                    <div class="form-group m-b-20 f-s-16">
+                     	密码： <input type="password" id="password" class="form-control input-lg" /> 
+                    </div>
+           
+
+                    <div class="login-buttons">
+                        
+                        <h:inputHidden id="hash_password" value="#{loginBean.m_password}" /> 
+                        <h:commandButton id="register" onclick="return login();" 
+                        action="#{loginBean.operatorLogin()}" value="登          录" class="btn btn-success btn-block btn-lg f-s-16"/>
+                       	
+                       	<br/>
+                       	<div style="color:#cc0000;font-size:1.3em">
+                       	<h:outputText value="#{loginBean.m_message}" styleClass="messages" ></h:outputText>
+                       	</div>
+                        <a href="app.jsf" style="float:right;font-size:14px;"></a>
+                    </div>
+                    
+                </h:form>
+            </div>
+        </div>
+        <!-- end login -->
+        <div id="div_charge_window" style="display:none;">
+		</div>
+ 
+	
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+	<script src="assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+	<script src="assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!--[if lt IE 9]>
+        <script src="assets/crossbrowserjs/html5shiv.js"></script>
+        <script src="assets/crossbrowserjs/respond.min.js"></script>
+        <script src="assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+	<script src="assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+	<!-- ================== END BASE JS ================== -->
+	
+	<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+	<script src="assets/js/login-v2.demo.min.js"></script>
+	<script src="assets/js/apps.min.js"></script>
+	<script src="resources/js/SHA256.js"></script>
+	<script src="resources/js/BASE64.js"></script>
+	<script src="resources/js/md5.js"></script>
+	<!-- ================== END PAGE LEVEL JS ================== -->
+
+	<script>
+		$(document).ready(function() {
+			App.init();
+			LoginV2.init();
+			showMessage();
+		});
+
+		function showMessage(){
+	    	var o = $("#p_operator_message");
+	    	if (o == undefined) {
+	    		return ;
+	    	}
+	    	var message = o.html();
+	    	if (message == undefined) {
+	    		return ;
+	    	}else if(message != ""){
+	    		alert(message);
+	    		messages=null;
+		    }
+	    	
+	    	
+	    }
+
+		function login() {
+			try {
+				//getComputerName();
+				var password = $("#password").val();
+				if(password == "" || password == undefined || password == null){
+					$(":input[name$='hash_password']").val("");
+				}else{
+					var md5 = hex_md5(password);
+					console.log("password_md5:" + md5);
+		            var sha256 = sha256_digest(md5);
+		            console.log("password_md5_sha256:" + sha256);
+		            //var base64 = BASE64.encoder(hexToString(sha256));
+		            $(":input[name$='hash_password']").val(sha256);
+				}
+				
+	            
+
+			} catch (e) {
+				alert("Decode Failed");
+				return false;
+			}
+            return true;
+		}
+
+		function hexToString(str){
+		　　var val="";
+		　　var arr = str.split(",");
+		　　for(var i = 0; str.length > i; i++){
+		　　　　val += arr[i].fromCharCode(i);
+		　　}
+		　　return val;
+		}
+
+		function alertHelp() {
+			 if (confirm('#{msgs.opreateDocDownload}'))
+			    {
+				 location.href="http://101.201.113.90:80/AppServer/opreateDetail.pdf";
+				}	
+			    else
+				{
+				}
+		}
+	   	
+	</script>
+</body>
+</html>

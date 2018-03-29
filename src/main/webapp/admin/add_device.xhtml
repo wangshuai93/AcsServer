@@ -1,0 +1,283 @@
+<ui:composition template="default_device.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:rich="http://richfaces.org/rich">
+	<ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>设备管理</li>
+				<li class="active">添加设备</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading">
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">添加设备</h4>
+						</div>
+
+						<div class="panel-body">
+							<h:form id="form">
+								
+								<p id="p_add_message" style="display: none;">#{cPEController.m_cpeMessage}</p> 
+								<!-- <p id="p_operator_message" style="display: none;">#{cPEController.m_cpeMessage}</p> -->
+								<p></p>
+
+								<div class="table-responsive">
+									<div class="panel-heading" style="float: left;">
+										<div style="font-size: 1.5em; float: left;">
+											<strong>基本信息：</strong>
+										</div>
+										<i id="basicInfo" class="fa fa-2x fa-chevron-circle-up"
+											data-toggle="collapse" style="cursor: pointer;"
+											aria-expanded="true" data-target="#collapseOne"
+											onclick="javascript:changepic(this)"></i>
+									</div>
+									<div
+										style="margin: 0; padding: 0; width: 100%; height: 1px; background-color: #303030; overflow: hidden;"></div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<table class="table">
+											<tbody>
+												<tr>
+													<td width="10%" rowspan="11" align="right"></td>
+													<td style="width: 15%; vertical-align: middle;">*序列号</td>
+													<td style="width: 50%;">
+														<h:inputText
+															id="m_serialNumber" class="form-control"
+															style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_serialNumber}"/> 
+															<h:message for="m_serialNumber" />
+													</td>
+													<td/>
+												</tr>
+
+												<tr>
+													<td style="vertical-align: middle;">MAC地址</td>
+													<td>
+														<h:inputText id="m_macAddress"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_macAddress}" /> 
+															<h:message for="m_macAddress"/>
+													</td>
+												</tr>
+												
+												<tr>
+													<td style="vertical-align: middle;">设备状态</td>
+													<td><h:selectOneMenu id="m_status"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_status}">
+															<f:selectItem itemLabel="offline" itemValue="offline"></f:selectItem>
+															<f:selectItem itemLabel="online" itemValue="online"></f:selectItem>
+														</h:selectOneMenu> <h:message for="m_status" /></td>
+												</tr> 
+												
+												<tr>
+													<td style="vertical-align: middle;">*所在横坐标位置</td>
+													<td> 
+														<h:inputText id="m_positionX" readonly="true"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_positionX}" /> 
+															<h:message for="m_positionX"/>
+													</td>
+												</tr>
+												
+												<tr>
+													<td style="vertical-align: middle;">*所在纵坐标位置</td>
+													<td>
+														<h:inputText id="m_positionY" readonly="true"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_positionY}" /> 
+															<h:message for="m_positionY"/>
+													</td>
+												</tr>
+
+												<tr>
+													<td style="vertical-align: middle;">*位置名称</td>
+													<td>
+														<h:inputText id="m_positionName"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_positionName}"/>
+														    <h:message for="m_positionName"/>
+													</td>
+												</tr>
+												
+												<tr>
+													<td style="vertical-align: middle;">厂商</td>
+													<td>
+														<h:inputText id="m_manuFacturer"
+															class="form-control" style="height:30px;width:100%;"
+															value="#{cPEController.m_cpeBean.m_manuFacturer}"/>
+														    <h:message for="m_manuFacturer"/>
+													</td>
+												</tr>
+												
+											</tbody>
+										</table> 
+									</div>
+								</div>
+
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" name="detail" value="update"/>
+								<input type="hidden" id="hidden_positionX"  name="positionX" value=""/>
+								<input type="hidden" id="hidden_positionY" name="positionY" value=""/>
+								
+								<div class="div_center_operator">
+									<h:commandButton action="#{cPEController.addDevice()}"
+										value="添加" class="grey_black_button_css" />
+									<!-- <input type="button"
+										onclick="javascript: history.back()"
+										value="返回" class="grey_black_button_css" /> -->
+									<h:commandButton class="grey_black_button_css"
+											action="#{taskController.returnMainView()}" value="返回" />
+								</div>
+
+							</h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+			<div class="invoice-footer text-muted">
+				<p class="text-center m-b-5">欢迎访问本系统                     V_2017.8.30</p>
+			</div>
+		</div>
+		<!-- end #content -->
+	</ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+		
+		$(document).ready(function() {
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}
+
+			//左侧边栏选中
+    		$("#device_manage").css('color', '#0090FF');
+			$("#li_1").css('color', '#0090FF');
+			$("#li_2").css('color', '#88AEF1');
+			$("#li_3").css('color', '#88AEF1');
+			$("#li_4").css('color', '#88AEF1');
+
+			//获取地址栏的positionX与positionY的值赋给输入框中
+			$(document.getElementById("form:m_positionX")).val(getQueryString("positionX"));
+			$(document.getElementById("form:m_positionY")).val(getQueryString("positionY"));
+
+			//隐藏域赋值，供后台取
+			$(document.getElementById("hidden_positionX")).val(getQueryString("positionX"));
+			$(document.getElementById("hidden_positionY")).val(getQueryString("positionY"));
+    	});
+		
+		function getQueryString(name){
+		     var reg = new RegExp("(^|&amp;)"+ name +"=([^&amp;]*)(&amp;|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null) 
+			     return  unescape(r[2]);
+		     return null;
+		}
+
+		function showMessage(){
+	    	var o = $("#p_add_message");
+	    	if (o == undefined) {
+	    		return ;
+	    	}
+	    	var message = o.html();
+	    	if (message == undefined) {
+	    		return ;
+	    	}
+
+	    	if (message.indexOf("成功") != -1 || message.indexOf("SUCCESS") != -1 
+	    	    	|| message.indexOf("success") != -1 || message.indexOf("Success") != -1) {
+	    		$.msgbox({
+	    			type : 'success',
+	    			content : $("#p_add_message").html(),
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+	    			title : '操作成功',
+	    			buttons: ['确定'],
+                    buttonEvents: {
+                        '确定': function() {
+                            $.msgbox.closeAll();
+                            location.href = "../admin/main_view.jsf";
+                        }
+                    }
+	    		});
+	    	} else if (message != "") {
+	    		$.msgbox({
+	    			type : 'alert',
+	    			content : $("#p_add_message").html(),
+	    			icons: ['min', 'max', 'close'],
+	        		id: 0,
+	    			title : '提示',
+	    			buttons: ['确定'],
+                    buttonEvents: {
+                        '确定': function() {
+                            $.msgbox.closeAll();
+                            history.back();
+                        }
+                    }
+	    		});
+	    	}
+	    	
+	    }
+
+		function changepic(msg){
+	        var bs = document.getElementById(msg.id);
+            if((bs.getAttribute('aria-expanded')) == "false")
+	          {
+	            bs.setAttribute("class", "fa fa-2x fa-chevron-circle-up");
+		      }
+		    else if((bs.getAttribute('aria-expanded')) == "true")
+			  {
+		        bs.setAttribute("class", "fa fa-2x fa-chevron-circle-down");
+			  } 
+		}
+		
+		function changetime(){
+    		if ($("[id$='logout']").val() =='否') {
+    			$("[id$='time']").attr("readonly","true");
+			}else{
+				$("[id$='time']").attr("readonly",false);
+			}
+        }
+
+		function checkCandNumber(phoneNumber){
+			var val=phoneNumber.value;
+			if(val.length != 11)
+			{ 
+				$("#phone").html("#{msgs.phoneError}");
+			}else{
+				$("#phone").html("");
+			}
+	    }
+			/* _ *\    */
+		</script>
+	</ui:define>
+
+</ui:composition>

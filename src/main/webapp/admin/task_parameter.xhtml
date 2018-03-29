@@ -1,0 +1,371 @@
+<ui:composition template="default_settings.xhtml"
+         xmlns="http://www.w3.org/1999/xhtml"
+         xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:my="http://java.sun.com/jsf/composite/components"
+         xmlns:p="http://primefaces.org/ui"
+         xmlns:rich="http://richfaces.org/rich">
+     <ui:define name="centercontent">
+
+		<!-- begin #content -->
+		<div id="content" class="content margin_left_220px content-margin-top">
+			<!-- begin breadcrumb -->
+			<ol class="breadcrumb f-s-14">
+				<li>系统设置</li>
+				<li class="active">任务参数</li>
+			</ol>
+
+			<!-- begin row -->
+			<div class="row">
+
+				<!-- begin col-12 -->
+				<div class="col-md-12">
+					<!-- begin panel -->
+					<div class="panel panel-inverse">
+						<div class="panel-heading"  >
+							<div class="panel-heading-btn">
+								<a href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-default"
+									data-click="panel-expand"><i class="fa fa-expand"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-success"
+									data-click="panel-reload"><i class="fa fa-repeat"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-warning"
+									data-click="panel-collapse"><i class="fa fa-minus"></i></a> <a
+									href="javascript:;"
+									class="btn btn-xs btn-icon btn-circle btn-danger"
+									data-click="panel-remove"><i class="fa fa-times"></i></a>
+							</div>
+							<h4 class="panel-title">任务参数</h4>
+						</div>
+
+                        <div class="panel-body">
+						    <h:form id="node_information">							
+								<div id="task_info">
+								   <table>
+								    <tr>
+								     <td> <h:outputLabel value="所有任务:"/></td>
+								     <td><h:selectOneMenu id="all_task" class="form-control" style="height: 22px; width: 100%; margin-left: 6px; padding-left: 12px; padding-top: 1px; padding-bottom: 1px;"
+											value="#{systemSettingController.task_id}" 
+											valueChangeListener="#{systemSettingController.findParamByTask}"
+											immediate="true">		
+										    <f:ajax render="table_information table_param_set table_param_get all_task" event="valueChange" immediate="true" />							
+										    <f:selectItems id="task_list" value="#{systemSettingController.m_allTask}" 
+										        var="p" itemLabel="#{p.m_name}" itemValue="#{p.m_id}" />							  
+								         </h:selectOneMenu> 
+								     </td>						 
+								     <td>
+								        <input type="button" onclick="javascript: gotoAddParamSet()"
+										    value="添加下发参数" style="margin-left: 8px; color: black;" />								      
+								     </td>	
+								     <td>
+								         <input type="button" onclick="javascript: gotoAddParamGet()"
+										    value="添加上报参数" style="color: black;" />				        
+								     </td>	
+								      <td>
+								         <h:commandButton action="#{systemSettingController.gotoAllParam}" value="所有参数" />			        
+								     </td>			  
+									 </tr>
+									</table>
+								</div>
+								<div></div>
+						        <div class="table-responsive">
+									<p id="p_operator_message" style="display: none;">#{systemSettingController.m_message}</p>
+									<p></p>			                    
+									
+									<h:outputLabel value="所有参数:"/>		
+									<h:dataTable id="table_information" var="bean"
+										value="#{systemSettingController.m_nodeListForTask}"
+										styleClass="table table-striped table-bordered nowrap myTable">
+										<tr class="odd gradeX">	
+										    <h:column>
+												<f:facet name="header">
+													<input type='checkbox' id='select_all'></input>
+												</f:facet>
+												<input type='checkbox' name="select_item"
+													value="#{bean.id}"/>
+											</h:column>
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.m_rowId}
+									        </h:column>
+									        <h:column>
+												<f:facet name="header">参数名称</f:facet>
+				    			                #{bean.abbr_name} 
+				   			     	        </h:column>
+										    <h:column>
+												<f:facet name="header">参数路径</f:facet>
+				    			                #{bean.node_path} 
+				   			     	        </h:column>
+											<h:column>
+												<f:facet name="header">参数类型</f:facet>
+									 	        #{bean.type}			
+				      			  	        </h:column>
+                                            <h:column>
+												<f:facet name="header">操作</f:facet>
+												<a href="javascript: goTodeleteParam('#{bean.id}')" style="color: black;"> 删除</a>
+									        </h:column>											
+									</tr>
+									</h:dataTable>
+									
+									<h:outputLabel value="下发参数:"/>
+									<h:dataTable id="table_param_set" var="bean"
+										value="#{systemSettingController.m_paramSet}"
+										styleClass="table table-striped table-bordered nowrap">
+										<tr class="odd gradeX">	
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.m_rowId}
+									        </h:column>
+									        <h:column>
+												<f:facet name="header">参数名称</f:facet>
+				    			                #{bean.abbr_name} 
+				   			     	        </h:column>
+										    <h:column>
+												<f:facet name="header">参数路径</f:facet>
+				    			                #{bean.node_path} 
+				   			     	        </h:column>
+				   			     	        <h:column>
+												<f:facet name="header">参数类型</f:facet>
+									 	        #{bean.type}			
+				      			  	        </h:column>
+                                            <h:column>
+												<f:facet name="header">操作</f:facet>
+												<a href="javascript: goTodeleteParamSet('#{bean.id}')" style="color: black;"> 删除</a>
+									        </h:column>											
+									</tr>
+									</h:dataTable>
+									
+									<h:outputLabel value="上报参数:"/>
+									<h:dataTable id="table_param_get" var="bean"
+										value="#{systemSettingController.m_paramGet}"
+										styleClass="table table-striped table-bordered nowrap">
+										<tr class="odd gradeX">	
+											<h:column>
+												<f:facet name="header">序号</f:facet>
+										        #{bean.m_rowId}
+									        </h:column>
+									        <h:column>
+												<f:facet name="header">参数名称</f:facet>
+				    			                #{bean.abbr_name} 
+				   			     	        </h:column>
+										    <h:column>
+												<f:facet name="header">参数路径</f:facet>
+				    			                #{bean.node_path} 
+				   			     	        </h:column>
+				   			     	        <h:column>
+												<f:facet name="header">参数类型</f:facet>
+									 	        #{bean.type}			
+				      			  	        </h:column>
+                                            <h:column>
+												<f:facet name="header">操作</f:facet>
+												<a href="javascript: goTodeleteParamGet('#{bean.id}')" style="color: black;"> 删除</a>
+									        </h:column>											
+									</tr>
+									</h:dataTable>
+									
+								</div>	
+								
+								<input type="hidden" name="load" value="lazy" />
+								<input type="hidden" id="hidden_node_id" name="node_id" />
+				                <h:commandButton action="#{systemSettingController.deleteTaskNode()}" value="删除参数" style="display:none;"/>				                
+				                <h:commandButton action="#{systemSettingController.addParamSet}" value="_下发参数" style="display:none;"/>
+				                <h:commandButton action="#{systemSettingController.addParamGet}" value="_上报参数" style="display:none;"/>
+				                <h:commandButton action="#{systemSettingController.deleteParamSet}" value="_删除下发参数" style="display:none;"/>
+				                <h:commandButton action="#{systemSettingController.deleteParamGet}" value="_删除上报参数" style="display:none;"/>
+						   </h:form>
+						</div>
+					</div>
+					<!-- end panel -->
+				</div>
+				<!-- end col-10 -->
+			</div>
+			<!-- end row -->
+				<div class="invoice-footer text-muted">
+                    <p class="text-center m-b-5">
+                        	欢迎访问本系统                     V_2017.8.30
+                    </p>
+                </div>
+		</div>
+		<!-- end #content -->
+    </ui:define>
+
+	<ui:define name="js_content2">
+		<script type="text/javascript">
+			$(document).ready(function() {				
+	    		if ($("[id$='logout']").val() =='否') {
+	    			$("[id$='time']").attr("readonly","true");
+				}
+
+	    		$("#system_settings").css('color', '#0090FF');
+	    		$("#li_1").css('color', '#88AEF1');
+	    		$("#li_2").css('color', '#88AEF1');
+	    		$("#li_3").css('color', '#88AEF1');
+	    		$("#li_4").css('color', '#0090FF');
+	    		$("#li_5").css('color', '#88AEF1');
+	    	});		
+
+	    	function goTodeleteParam(node_id){
+	    		 $("#hidden_node_id").attr("value",node_id);	
+				 $.msgbox({
+		                title:'删除任务参数',
+		                type: 'alert',
+		                //content: contentInfo,
+		                icons: ['min', 'max', 'close'],
+		                id: 11,
+		                buttons: ['确定', '取消'],
+		                buttonEvents: {
+		                    '确定': function() {
+		                    	$(":submit[value='删除参数']").each(function (){
+		        					$(this).click();
+		        				});
+		                    },
+		                    '取消': function() {
+		                        $.msgbox.closeAll();
+		                    }
+		                }
+		            });
+				   var contentInfo = "<div>确认所选任务参数</div>"; 
+				   //确认弹窗的内容的刷新
+		           var msgbox = $.msgbox(11)
+		           if (msgbox) msgbox.content(contentInfo);
+		    }
+
+	    	function gotoAddParamSet(){
+		    	var count = 0;
+	            $("input[name='select_item']").each(function(){
+	                if ($(this).attr("checked") == "checked"){
+	                    count++;
+	                } 
+	            });
+	         	
+	            if (count == 0){
+	                $.msgbox({
+	                    type : 'error',
+	                    content : "请选择参数!",
+	                    icons: ['min', 'max', 'close'],
+	                    id: 1,
+	                    title : '操作错误'
+	                });
+	                return ;
+	            }  
+	         
+	            var contentInfo = "<div>确认所选任务的下发参数？</div>"; 
+	            $.msgbox({
+	                title:'提示',
+	                type: 'alert',
+	                content: contentInfo,
+	                icons: ['min', 'max', 'close'],
+	                id: 11,
+	                buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='_下发参数']")[0].click();
+	                    },
+	                    '取消': function() {
+	                        $.msgbox.closeAll();
+	                    }
+	                }
+	            });
+	            //确认弹窗的内容的刷新
+	            var msgbox = $.msgbox(11)
+	            if (msgbox) msgbox.content(contentInfo);
+			}
+
+			function gotoAddParamGet(){
+				var count = 0;
+	            $("input[name='select_item']").each(function(){
+	                if ($(this).attr("checked") == "checked"){
+	                    count++;
+	                } 
+	            });
+	         	
+	            if (count == 0){
+	                $.msgbox({
+	                    type : 'error',
+	                    content : "请选择参数!",
+	                    icons: ['min', 'max', 'close'],
+	                    id: 2,
+	                    title : '操作错误'
+	                });
+	                return ;
+	            }  
+	         
+	            var contentInfo = "<div>确认所选任务的上报参数？</div>"; 
+	            $.msgbox({
+	                title:'提示',
+	                type: 'alert',
+	                content: contentInfo,
+	                icons: ['min', 'max', 'close'],
+	                id: 12,
+	                buttons: ['确定', '取消'],
+	                buttonEvents: {
+	                    '确定': function() {
+	                        $(":submit[value='_上报参数']")[0].click();
+	                    },
+	                    '取消': function() {
+	                        $.msgbox.closeAll();
+	                    }
+	                }
+	            });
+	            //确认弹窗的内容的刷新
+	            var msgbox = $.msgbox(12)
+	            if (msgbox) msgbox.content(contentInfo);
+			}
+
+			function goTodeleteParamSet(node_id){
+				$("#hidden_node_id").attr("value",node_id);	
+				 $.msgbox({
+		                title:'删除任务下发参数',
+		                type: 'alert',
+		                //content: contentInfo,
+		                icons: ['min', 'max', 'close'],
+		                id: 11,
+		                buttons: ['确定', '取消'],
+		                buttonEvents: {
+		                    '确定': function() {
+		                    	$(":submit[value='_删除下发参数']").each(function (){
+		        					$(this).click();
+		        				});
+		                    },
+		                    '取消': function() {
+		                        $.msgbox.closeAll();
+		                    }
+		                }
+		            });
+				   var contentInfo = "<div>确认所选任务与其下发参数</div>"; 
+				   //确认弹窗的内容的刷新
+		           var msgbox = $.msgbox(11)
+		           if (msgbox) msgbox.content(contentInfo);
+			}
+
+			function goTodeleteParamGet(node_id){
+				$("#hidden_node_id").attr("value",node_id);	
+				 $.msgbox({
+		                title:'删除任务上报参数',
+		                type: 'alert',
+		                //content: contentInfo,
+		                icons: ['min', 'max', 'close'],
+		                id: 11,
+		                buttons: ['确定', '取消'],
+		                buttonEvents: {
+		                    '确定': function() {
+		                    	$(":submit[value='_删除上报参数']").each(function (){
+		        					$(this).click();
+		        				});
+		                    },
+		                    '取消': function() {
+		                        $.msgbox.closeAll();
+		                    }
+		                }
+		            });
+				   var contentInfo = "<div>确认所选任务与其上报参数</div>"; 
+				   //确认弹窗的内容的刷新
+		           var msgbox = $.msgbox(11)
+		           if (msgbox) msgbox.content(contentInfo);
+			}
+		</script>
+    </ui:define>
+</ui:composition>

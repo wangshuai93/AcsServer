@@ -1,0 +1,55 @@
+<ui:composition template="default_nosilder.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+		<div id="page-container"
+			class="fade in page-sidebar-fixed page-header-fixed ">
+			<!-- begin sidebar -->
+			<div id="sidebar" class="sidebar">
+				<!-- begin sidebar scrollbar -->
+				<div data-scrollbar="true" data-height="100%">
+					<h:form id="usermanager_menu_bar" prependId="false">
+						<ul id="sidebar_ul_total" class="nav">
+
+							<li id="sidebar_li_monitor_manage" class="has-sub f-s-18"
+								style="display: block;"><a href="javascript:;"> <b
+									class="caret pull-right"></b> <span class="f-s-20">帐户管理</span>
+							</a>
+								<ul class="sub-menu f-s-16" style="display: block;">
+									<li><h:outputLabel><a id="li_1" href="../admin/all_users.jsf" class="f-s-18" style="color: #88AEF1;">所有用户</a></h:outputLabel></li>
+									<li><h:outputLabel><a id="li_2" href="../admin/add_user.jsf" class="f-s-18" style="color: #88AEF1;">添加用户</a></h:outputLabel></li>
+									<li><h:outputLabel><h:commandLink id="li_3" action="#{pesonalInfoController.gotoModifyPage()}" class="f-s-18" style="color: #88AEF1;">修改密码</h:commandLink></h:outputLabel></li>
+								</ul></li>
+						</ul>
+					</h:form>
+				</div>
+				<!-- end sidebar scrollbar -->
+			</div>
+			<!-- end sidebar-->
+			<div class="sidebar-bg"></div>
+			<ui:insert name="centercontent">
+				<!-- [Template content will be inserted here, data in the panel] -->
+
+			</ui:insert>
+			<div style="display: none" class="bg" id="bg"></div>
+		</div>
+	</ui:define>
+	 <ui:define name="js_content">
+		<script >
+		$(document).ready(function() {
+			var patn = window.location.pathname;
+			var x = patn.indexOf('default_user.jsf');
+			if(x > 0 || x == 0){
+				window.location.href="all_users.jsf";
+			} 
+   		});
+		</script>
+		
+		<ui:insert name="js_content2">
+    	</ui:insert>
+	</ui:define>
+</ui:composition>
